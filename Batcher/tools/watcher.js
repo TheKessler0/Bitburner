@@ -172,7 +172,7 @@ const processSchema = new Map([
         '1hack.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.HCK)
     ],
     [
-        'batch-watcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+        'watcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
     ],
     [
         'servinf.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
