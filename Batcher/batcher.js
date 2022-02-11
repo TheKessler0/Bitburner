@@ -1,7 +1,7 @@
 /**@param ns{NS} */
 export async function main(ns) {
 
-    ns.exec('batch-watcher.js', 'home')
+    ns.exec('watcher.js', 'home')
     ns.exec('servinf.js', 'home')
 
     let ALL = []
