@@ -36,7 +36,7 @@ export async function main(ns) {
     await ns.sleep(5000);
     while (true) {
         await ns.sleep(0);
-        if (batchcount >= 50) {
+        if (batchcount >= Infinity) {
             batchcount = 0;
             ns.print('\nINFO: sleeping for 10s\n');
             await ns.sleep(10000);
