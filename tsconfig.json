@@ -1,0 +1,30 @@
+{
+  "include": [
+    "NetscriptDefinitions.d.ts",
+    "global.d.ts",
+    "src/*/", "src/batcher/batcher.js", "src/batcher/dependencies/1grow.js", "src/batcher/dependencies/1weaken.js", "src/batcher/dependencies/1hack.js", "src/batcher/tools/watcher.js", "src/batcher/tools/servinf.js",
+  ],
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "allowJs": true,
+    "sourceRoot": "http://localhost:8000/sources/",
+    "strict": true,
+    "rootDir": "src/",
+    "outDir": "dist/",
+    "baseUrl": "src/",
+    "paths": {
+      "/": [
+        ""
+      ],
+      "@ns": [
+        "../NetscriptDefinitions.d.ts"
+      ]
+    }
+  }
+}

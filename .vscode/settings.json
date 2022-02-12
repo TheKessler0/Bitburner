@@ -1,0 +1,31 @@
+{
+    // Linter Settings
+    "typescript.validate.enable": true,
+    "javascript.validate.enable": false,
+    "eslint.validate": ["typescript", "typescriptreact"],
+    "eslint.workingDirectories": ["./src"],
+    "editor.codeActionsOnSave": {"source.fixAll.eslint": true},
+
+    // Use Non-relative imports so the game can find files in its fake directory structure
+    // TODO https://github.com/microsoft/vscode/issues/97135
+    // TODO https://stackoverflow.com/questions/37747938/visual-studio-code-apply-rename-file-refactoring-in-all-es6-imports
+    "javascript.preferences.importModuleSpecifier": "non-relative",
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+
+    // Bitburner Extension Settings
+    "bitburner.scriptRoot": "./dist/",
+
+    // Autosave Settings
+    "files.autoSave": "onWindowChange",
+
+    // Autosnippet settings
+    "autoSnippet.snippets": [
+        {
+            "pattern": "**/*.ts", 
+            "snippet": "ns-template"
+        },
+    ],
+    "bitburner.fileWatcher.enable": true,
+    "bitburner.showFileWatcherEnabledNotification": true,
+    "bitburner.showPushSuccessNotification": true,
+}

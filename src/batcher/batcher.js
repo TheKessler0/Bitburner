@@ -1,15 +1,15 @@
 /**@param ns{NS} */
 export async function main(ns) {
 
-    ns.exec('watcher.js', 'home')
-    ns.exec('servinf.js', 'home')
+    ns.exec('/batcher/tools/watcher.js', 'home')
+    ns.exec('/batcher/tools/servinf.js', 'home')
 
     let ALL = []
     let CURRENT = []
     const SCRIPTS = {
-        HCK: '1hack.js',
-        GRW: '1grow.js',
-        WKN: '1weaken.js',
+        HCK: '/batcher/dependencies/1hack.js',
+        GRW: '/batcher/dependencies/1grow.js',
+        WKN: '/batcher/dependencies/1weaken.js',
         CST: 1.80 //GB
     }
     let TARGET = ''

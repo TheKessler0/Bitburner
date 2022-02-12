@@ -1,0 +1,5 @@
+node_modules/
+dist/
+NetscriptDefinitions.d.ts
+src/lib/constants.ts
+package-lock.json
