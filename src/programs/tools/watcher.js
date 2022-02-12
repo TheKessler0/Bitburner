@@ -169,22 +169,22 @@ class ProcessGroup {
 }
 const processSchema = new Map([
     [
-        '1weaken.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.WKN)
+        '/programs/dependencies/1weaken.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.WKN)
     ],
     [
-        '1grow.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.GRW)
+        '/programs/dependencies/1grow.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.GRW)
     ],
     [
-        '1hack.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.HCK)
+        '/programs/dependencies/1hack.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.HCK)
     ],
     [
-        'watcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+        '/programs/tools/watcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
     ],
     [
-        'servinf.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+        '/programs/tools/servinf.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
     ],
     [
-        'batcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+        '/programs/batcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
     ]
 ]);
 function unknownProcess(p, hostId) {

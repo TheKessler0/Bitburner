@@ -1,13 +1,13 @@
 /**@param ns{NS} */
 export async function main(ns) {
-    ns.exec('/batcher/tools/watcher.js', 'home');
-    ns.exec('/batcher/tools/servinf.js', 'home');
+    ns.exec('/programs/tools/watcher.js', 'home');
+    ns.exec('/programs/tools/servinf.js', 'home');
     let ALL = [];
     let CURRENT = [];
     const SCRIPTS = {
-        HCK: '/batcher/dependencies/1hack.js',
-        GRW: '/batcher/dependencies/1grow.js',
-        WKN: '/batcher/dependencies/1weaken.js',
+        HCK: '/programs/dependencies/1hack.js',
+        GRW: '/programs/dependencies/1grow.js',
+        WKN: '/programs/dependencies/1weaken.js',
         CST: 1.80 //GB
     };
     let TARGET = '';
