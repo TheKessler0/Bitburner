@@ -133,12 +133,11 @@ export async function main(ns) {
             }
             let minimum = Math.min(CURRENT[i].left, NEEDED_WKN_SEC);
             if (minimum > 0) {
-                if (temp_sec != ns.getWeakenTime(TARGET)) {
-                    batch_failed = true;
-                }
+                if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                 current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'WKN_SEC0'));
                 NEEDED_WKN_SEC -= minimum;
                 CURRENT[i].left -= minimum;
+                if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
             }
         }
         await ns.sleep(50); //catch-up time
@@ -153,13 +152,12 @@ export async function main(ns) {
                 }
                 let minimum = Math.min(CURRENT[i].left, NEEDED_GRW);
                 if (minimum > 0) {
-                    if (temp_sec != ns.getWeakenTime(TARGET)) {
-                        batch_failed = true;
-                    }
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                     current_batch.push(ns.exec(SCRIPTS.GRW, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'GRW'));
                     n_grw = Math.ceil(minimum / 12.50);
                     NEEDED_GRW -= minimum;
                     CURRENT[i].left -= minimum;
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                     break;
                 }
             }
@@ -172,12 +170,11 @@ export async function main(ns) {
                 }
                 let minimum = Math.min(n_grw, CURRENT[i].left);
                 if (minimum > 0) {
-                    if (temp_sec != ns.getWeakenTime(TARGET)) {
-                        batch_failed = true;
-                    }
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                     current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'WKN_GRW'));
                     CURRENT[i].left -= minimum;
                     n_grw -= minimum;
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                 }
             }
             await ns.sleep(50);
@@ -192,13 +189,12 @@ export async function main(ns) {
                 }
                 let minimum = Math.min(CURRENT[i].left, NEEDED_HCK);
                 if (minimum > 0) {
-                    if (temp_sec != ns.getWeakenTime(TARGET)) {
-                        batch_failed = true;
-                    }
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                     current_batch.push(ns.exec(SCRIPTS.HCK, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'HCK'));
                     n_hck = Math.ceil(minimum / 25.00);
                     NEEDED_HCK -= minimum;
                     CURRENT[i].left -= minimum;
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                     break;
                 }
             }
@@ -210,12 +206,11 @@ export async function main(ns) {
                 }
                 let minimum = Math.min(n_hck, CURRENT[i].left);
                 if (minimum > 0) {
-                    if (temp_sec != ns.getWeakenTime(TARGET)) {
-                        batch_failed = true;
-                    }
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                     current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'WKN_HCK'));
                     CURRENT[i].left -= minimum;
                     n_hck -= minimum;
+                    if (temp_sec != ns.getWeakenTime(TARGET)) {batch_failed = true};
                 }
             }
             await ns.sleep(50);
