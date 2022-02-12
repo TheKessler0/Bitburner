@@ -304,7 +304,7 @@ export async function main(ns) {
             CURRENT[i].left = Math.floor((ns.getServerMaxRam(CURRENT[i].name) - ns.getServerUsedRam(CURRENT[i].name)) / SCRIPTS.CST);
             CURRENT[i].security = ns.getServerSecurityLevel(CURRENT[i].name) - ns.getServerMinSecurityLevel(CURRENT[i].name);
             CURRENT[i].value = 1;
-            CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name, 0.95) * CURRENT[i].security;
+            CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name, 0.95);
             CURRENT[i].value /= ns.getWeakenTime(CURRENT[i].name);
         }
         CURRENT = CURRENT.filter(function (a) { return (ns.hasRootAccess(a.name)); });
