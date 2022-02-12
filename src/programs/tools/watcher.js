@@ -102,27 +102,29 @@ export async function main(ns) {
             return 0;
         });
         let iterator = 0;
-        objInfo.forEach(([, group]) => {
-            const firstP = group.processes[0];
-            const firstSid = firstP.options.sid;
-            const line = [];
-            line.push(ProcessType[group.type]);
-            //if (firstSid) {
-            //    line.push('/', String(firstSid));
-            //}
-            line.push(' => threads: ', (group.threads + '').padStart(8, ' '));
-            if (firstP.targetId) {
-                line.push(' │ target: \'', firstP.targetId, '\'');
+        for (let i = 0; i == 0 || (i == 1 && iterator / 3 != Math.ceil(iterator / 3)); i++) {
+            objInfo.forEach(([, group]) => {
+                const firstP = group.processes[0];
+                const firstSid = firstP.options.sid;
+                const line = [];
+                line.push(ProcessType[group.type]);
+                //if (firstSid) {
+                //    line.push('/', String(firstSid));
+                //}
+                line.push(' => threads: ', (group.threads + '').padStart(8, ' '));
+                if (firstP.targetId) {
+                    line.push(' │ target: \'', firstP.targetId, '\'');
+                }
+                prnt += line.join('') + '\n';
+                iterator++;
+                if (iterator / 3 == Math.ceil(iterator / 3)) {
+                    prnt += '\n';
+                }
+            });
+            if (iterator / 3 != Math.ceil(iterator / 3)) {
+                prnt = 'ERROR:' + prnt;
+                prnt.replace('\n\n', '\n');
             }
-            prnt += line.join('') + '\n';
-            iterator++;
-            if (iterator / 3 == Math.ceil(iterator / 3)) {
-                prnt += '\n';
-            }
-        });
-        if (iterator / 3 != Math.ceil(iterator / 3)) {
-            prnt = 'ERROR:' + prnt;
-            prnt.replace('\n\n', '\n');
         }
         ns.print(prnt);
         const now = Date.now();
