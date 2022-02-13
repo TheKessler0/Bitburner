@@ -10,12 +10,18 @@ export async function main(ns) {
     ]);
 
 	let msg = ''
+	let msg_cnt = 0
 
 	flags._.forEach( function (a) {
-		msg += a + ' '
+		if (a == '\\n') {
+			msg += '\n[MSG_' + ++msg_cnt + ']: '
+		}
+		else {
+			msg += a + ' '
+		}
 	});
 
-	if (msg != '') {msg = '[MSG]: ' + msg + '\n'}
+	if (msg != '') {msg = '[MSG_0]: ' + msg + '\n'}
 
 	const divisions = 60
 	const delay = (flags.minutes * 60 * 1000) / divisions;
