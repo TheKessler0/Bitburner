@@ -6,7 +6,7 @@ export async function main(ns) {
 	ns.disableLog('ALL')
 
 	const flags = ns.flags([
-        ['minutes', 0.1]
+        ['minutes', 0]
     ]);
 
 	let msg = ''
@@ -52,7 +52,12 @@ export async function main(ns) {
 		loadingbar.push('[')
 		loadingbar[i] = loadingbar[i].padEnd(i, '|') + '.'
 		loadingbar[i] = loadingbar[i].padEnd(divisions, '|') + ']'
-		loadingbar[i] = 'I´ll be back in just a few secs...\n' + msg + loadingbar[i] + '\n'
+		if (flags.minutes != 0) {
+			loadingbar[i] = 'I´ll be back in just a few secs...\n' + msg + loadingbar[i] + '\n'
+		}
+		else {
+			loadingbar[i] = '\n' + msg
+		}
 
 	}
 
