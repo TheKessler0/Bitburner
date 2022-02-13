@@ -186,6 +186,9 @@ const processSchema = new Map([
     ],
     [
         '/programs/batcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+    ],
+    [
+        '/programs/brb.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
     ]
 ]);
 function unknownProcess(p, hostId) {
