@@ -1,3 +1,4 @@
+/** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
 var targets = ["I.I.I.I","CSEC","avmnite-02h","run4theh111z"]
 export async function main(ns) {
     ns.disableLog("sleep");

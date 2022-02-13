@@ -15,7 +15,7 @@ Parameters:
  *
  * @version 3.0-beta1
  */
-/** @param {NS} ns **/
+/** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
 export async function main(ns) {
     // Args
     const args = ns.flags([

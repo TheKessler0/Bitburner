@@ -1,4 +1,4 @@
-/** @param {NS} ns **/
+/** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
 export async function main(ns) {
 
 	ns.tail();
@@ -15,7 +15,7 @@ export async function main(ns) {
 /**
 * Automaticly hacks, weakens and grows servers
 * [fully autonomous]
-* @param {NS} ns 
+* @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns
 */
 async function AutoHacker(ns) {
 

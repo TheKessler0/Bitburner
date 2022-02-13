@@ -1,4 +1,4 @@
-/**@param ns{NS} */
+/** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
 export async function main(ns) {
     ns.exec('/programs/tools/watcher.js', 'home');
     ns.exec('/programs/tools/servinf.js', 'home');

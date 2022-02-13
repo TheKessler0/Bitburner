@@ -1,3 +1,5 @@
+/** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
+
 export async function main(ns) {
     const hashes = {};
     const files = ns.ls('home', '.js');

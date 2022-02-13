@@ -14,7 +14,7 @@ const css = `<style id="scanCSS">
 function tprint(html) {
     return doc.getElementById("terminal").insertAdjacentHTML('beforeend', `<li>${html}</li>`);
 }
-/** @param {NS} ns **/
+/** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
 export function main(ns) {
     const terminalInput = doc.getElementById("terminal-input");
     doc.head.insertAdjacentHTML('beforeend', doc.getElementById("scanCSS") ? '' : css);
