@@ -23,7 +23,7 @@ export async function main(ns) {
     let batchcount = 0;
     let batch_failed = false;
     const flags = ns.flags([
-        ['tresh', 2000],
+        ['tresh', 500],
         ['server', false],
         ['hacknet', false]
     ]);
