@@ -9,6 +9,14 @@ export async function main(ns) {
         ['minutes', 0.1]
     ]);
 
+	let msg = ''
+
+	flags._.forEach( function (a) {
+		msg += a + ' '
+	});
+
+	if (msg != '') {msg = '[MSG]: ' + msg + '\n'}
+
 	const divisions = 60
 	const delay = (flags.minutes * 60 * 1000) / divisions;
 
@@ -19,7 +27,7 @@ export async function main(ns) {
 		loadingbar.push('[')
 		loadingbar[i] = loadingbar[i].padEnd(i + 1, '|')
 		loadingbar[i] = loadingbar[i].padEnd(divisions, '-') + ']'
-		loadingbar[i] = 'I´ll be back in aprox ' + flags.minutes + ' minutes!\n' + loadingbar[i]
+		loadingbar[i] = 'I´ll be back in aprox ' + (((delay / (1000 * 60)) * (divisions - i)).toFixed(2)).padStart(5,'0') + ' minutes!\n' + msg + loadingbar[i] + '\n'
 
 	}
 
@@ -38,7 +46,7 @@ export async function main(ns) {
 		loadingbar.push('[')
 		loadingbar[i] = loadingbar[i].padEnd(i, '|') + '.'
 		loadingbar[i] = loadingbar[i].padEnd(divisions, '|') + ']'
-		loadingbar[i] = 'I´ll be back in aprox ' + flags.minutes + ' minutes!\n' + loadingbar[i]
+		loadingbar[i] = 'I´ll be back in just a few secs...\n' + msg + loadingbar[i] + '\n'
 
 	}
 
