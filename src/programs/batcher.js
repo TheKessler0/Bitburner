@@ -116,7 +116,7 @@ export async function main(ns) {
                 ns.print('\nTarget:     ' + printout.name + '\nALL:        ' + printout.all + ' \nWeaken:     ' + printout.wkn + ' \nHack:       ' + printout.hck + ' \nGrow:       ' + printout.grw + ' \nMoney:      ' + Math.floor(ns.getServerMoneyAvailable(printout.name)) + '$\nTTF:        ' + Math.ceil(ns.getWeakenTime(printout.name) / 1000) + 's\nOWNED ONLY: ' + PSERV_ONLY + '\n' + prnt_S + prnt_H);
             }
             if (batch_failed) {
-                ns.print('\nERROR: BATCH FAILED\n');
+                ns.print('\nINFO: BATCH CANCELED\n');
             }
         }
     }
