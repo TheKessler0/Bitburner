@@ -66,7 +66,7 @@ export async function main(ns) {
         for (const id of hostnames) {
             for (const processInfo of ns.ps(id)) {
                 const process = processSchema.get(processInfo.filename)?.(processInfo, id) || unknownProcess(processInfo, id);
-                if (process.type === ProcessType.Monitor) {
+                if (process.type === ProcessType.Monitor || process.type === ProcessType.Unknown) {
                     continue;
                 } // Skip monitor processes
                 Object.assign(process.options, additionalData.find(options => process.pid === options.pid)); // Add additional data
@@ -179,6 +179,9 @@ const processSchema = new Map([
         '/programs/dependencies/1hack.js', (p, hostId) => processHelperCat(p, hostId, ProcessType.HCK)
     ],
     [
+        '/programs/dependencies/1share.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+    ],
+    [
         '/programs/tools/watcher.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
     ],
     [
@@ -189,6 +192,12 @@ const processSchema = new Map([
     ],
     [
         '/programs/brb.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+    ],
+    [
+        '/programs/share.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
+    ],
+    [
+        '/programs/dependencies/xp-farmer.js', (p, hostId) => new Process(ProcessType.Monitor, p.pid, hostId, p.threads)
     ]
 ]);
 function unknownProcess(p, hostId) {
