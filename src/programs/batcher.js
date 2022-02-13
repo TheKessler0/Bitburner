@@ -120,7 +120,7 @@ export async function main(ns) {
             }
         }
     }
-    /**@param ns{NS} */
+    /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
     async function batch(ns) {
         const temp_weakentime = ns.getWeakenTime(TARGET);
         let current_batch = [];
@@ -234,7 +234,7 @@ export async function main(ns) {
             }
         }
     }
-    /**@param ns{NS} */
+    /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
     async function startup(ns) {
         ALL = [];
         let stage1 = ['home'];
@@ -264,7 +264,7 @@ export async function main(ns) {
             await ns.sleep(0);
         }
     }
-    /**@param ns{NS} */
+    /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
     async function refresh(ns) {
         CURRENT = ALL;
         let PORTS = {
@@ -300,11 +300,15 @@ export async function main(ns) {
                 ;
                 ns.nuke(CURRENT[i].name);
             }
+            let fakeServer = ns.getServer(CURRENT[i].name);
+            fakeServer.hackDifficulty = fakeServer.minDifficulty
+            fakeServer.moneyAvailable = fakeServer.moneyMax
+            
             CURRENT[i].left = Math.floor((ns.getServerMaxRam(CURRENT[i].name) - ns.getServerUsedRam(CURRENT[i].name)) / SCRIPTS.CST);
             CURRENT[i].security = ns.getServerSecurityLevel(CURRENT[i].name) - ns.getServerMinSecurityLevel(CURRENT[i].name);
             CURRENT[i].value = 1;
-            CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name, 0.95);
-            CURRENT[i].value /= ns.getWeakenTime(CURRENT[i].name);
+            CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name, 0.95) * ns.formulas.hacking.hackChance(fakeServer, ns.getPlayer());
+            CURRENT[i].value /= ns.formulas.hacking.weakenTime(fakeServer,ns.getPlayer());
         }
         CURRENT = CURRENT.filter(function (a) { return (ns.hasRootAccess(a.name)); });
     }
