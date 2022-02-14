@@ -126,7 +126,7 @@ export async function main(ns) {
         let current_batch = [];
         batch_failed = false;
         CURRENT = CURRENT.sort(function (a, b) { return a.left - b.left; });
-        for (let i = 0; NEEDED_WKN_SEC > 0 && i < CURRENT.length; i++) {
+        for (let i = 0; NEEDED_WKN_SEC > 0 && i < CURRENT.length && !batch_failed; i++) {
             if (CURRENT.length <= i) {
                 ns.tprint('ERROR: SEC0 ' + TARGET);
                 return;
@@ -141,14 +141,14 @@ export async function main(ns) {
             }
         }
         await ns.sleep(50); //catch-up time
-        while (NEEDED_GRW > 0) {
+        while (NEEDED_GRW > 0 && !batch_failed) {
             let n_grw = 0;
             let current_batch = [];
 
             await ns.sleep(50)
 
             CURRENT = CURRENT.sort(function (a, b) { return b.left - a.left; });
-            for (let i = 0; NEEDED_GRW > 0; i++) {
+            for (let i = 0; NEEDED_GRW > 0 && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
                     ns.tprint('ERROR: GRW ' + TARGET);
                     return;
@@ -166,7 +166,7 @@ export async function main(ns) {
             }
             await ns.sleep(50);
             CURRENT = CURRENT.sort(function (a, b) { return a.left - b.left; });
-            for (let i = 0; i < CURRENT.length; i++) {
+            for (let i = 0; i < CURRENT.length && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
                     ns.tprint('ERROR : WKN_GRW ' + TARGET);
                     return;
@@ -182,10 +182,10 @@ export async function main(ns) {
             }
             await ns.sleep(50);
         }
-        while (NEEDED_HCK > 0) {
+        while (NEEDED_HCK > 0 && !batch_failed) {
             let n_hck = 0;
             CURRENT = CURRENT.sort(function (a, b) { return a.left - b.left; });
-            for (let i = 0; NEEDED_HCK > 0; i++) {
+            for (let i = 0; NEEDED_HCK > 0 && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
                     ns.tprint('ERROR: HCK ' + TARGET);
                     return;
@@ -202,7 +202,7 @@ export async function main(ns) {
                 }
             }
             await ns.sleep(50);
-            for (let i = 0; i < CURRENT.length; i++) {
+            for (let i = 0; i < CURRENT.length && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
                     ns.tprint('ERROR: WKN ' + TARGET);
                     return;
