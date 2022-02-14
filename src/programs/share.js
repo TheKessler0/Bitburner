@@ -1,5 +1,6 @@
 /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
 export async function main(ns) {
+	ns.tail()
 
 	const script = '/programs/dependencies/1share.js'
 	const target = 'joesguns'
