@@ -20,7 +20,7 @@ export async function main(ns) {
             });
             if (ns.serverExists(servers[i].name)) {
                 servers[i].total = format(ns.getServerMaxRam(servers[i].name));
-                servers[i].usedPercent = (Math.round((ns.getServerUsedRam(servers[i].name) / ns.getServerMaxRam(servers[i].name)) * 100) + '%').padStart(7, ' ');
+                servers[i].usedPercent = (Math.ceil((ns.getServerUsedRam(servers[i].name) / ns.getServerMaxRam(servers[i].name)) * 100) + '%').padStart(7, ' ');
                 ALL.total += ns.getServerMaxRam(servers[i].name);
                 ALL.used += ns.getServerUsedRam(servers[i].name);
             }
