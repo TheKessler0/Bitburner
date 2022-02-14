@@ -29,28 +29,29 @@ export async function main(ns) {
         prnt += '=======================\n';
         ALL.totalFormat = format(ALL.total);
         if (ALL.used / ALL.total != NaN && ALL.used / ALL.total < Infinity) {
-            ALL.usedPercent = (Math.round((ALL.used / ALL.total) * 100) + '%').padStart(7, ' ');
+            ALL.usedPercent = (Math.ceil((ALL.used / ALL.total) * 100) + '%').padStart(7, ' ');
         }
         else {
-            ALL.usedPercent = ('---%').padStart(7, ' ');
+            ALL.usedPercent = ('---%').padStart(8, ' ');
         }
         prnt += 'ALL' + ALL.totalFormat + ALL.usedPercent + '\n';
+        prnt += 'HME' + format(ns.getServerMaxRam('home')) + (Math.ceil((ns.getServerUsedRam('home') / ns.getServerMaxRam('home')) * 100) + '%').padStart(8, ' ');
         ns.clearLog();
         ns.print(prnt);
         await ns.sleep(1000);
     }
     function format(num) {
         if (num >= 2 ** 30) {
-            return ((num / 2 ** 30).toFixed(2) + ' EB').padStart(13, ' ');
+            return ((num / 2 ** 30).toFixed(2) + ' EB').padStart(12, ' ');
         }
         if (num >= 2 ** 20) {
-            return ((num / 2 ** 20).toFixed(2) + ' PB').padStart(13, ' ');
+            return ((num / 2 ** 20).toFixed(2) + ' PB').padStart(12, ' ');
         }
         if (num >= 2 ** 10) {
-            return ((num / 2 ** 10).toFixed(2) + ' TB').padStart(13, ' ');
+            return ((num / 2 ** 10).toFixed(2) + ' TB').padStart(12, ' ');
         }
         if (num >= 2 ** 0) {
-            return ((num / 2 ** 0).toFixed(2) + ' GB').padStart(13, ' ');
+            return ((num / 2 ** 0).toFixed(2) + ' GB').padStart(12, ' ');
         }
         return ('----- GB').padStart(12, ' ');
     }

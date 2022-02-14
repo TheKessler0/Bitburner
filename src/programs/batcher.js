@@ -1,4 +1,4 @@
-/** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
+/** @param {import('@ns').NS} ns */
 export async function main(ns) {
     ns.exec('/programs/tools/watcher.js', 'home');
     ns.exec('/programs/tools/servinf.js', 'home');
@@ -27,6 +27,9 @@ export async function main(ns) {
         ['server', false],
         ['hacknet', false]
     ]);
+
+    ns.hack()
+
     flags.server = !flags.server;
     ns.disableLog('ALL');
     ns.clearLog();
@@ -100,18 +103,19 @@ export async function main(ns) {
 
             HACKPERCENT -= 0.0125;
         }
+        if (TARGET != '') {
         const printout = {
             name: TARGET,
             wkn: NEEDED_WKN_GRW + NEEDED_WKN_HCK + NEEDED_WKN_SEC,
             hck: NEEDED_HCK,
             grw: NEEDED_GRW,
-            all: NEEDED_WKN_GRW + NEEDED_WKN_HCK + NEEDED_WKN_SEC + NEEDED_HCK + NEEDED_WKN_GRW
+            all: NEEDED_WKN_GRW + NEEDED_WKN_HCK + NEEDED_WKN_SEC + NEEDED_HCK + NEEDED_WKN_GRW,
+            sec: (ns.getServerSecurityLevel(TARGET) - ns.getServerSecurityLevel(TARGET))
         };
-        if (TARGET != '') {
             await batch(ns);
             if (!batch_failed) {
                 batchcount++;
-                ns.print('\nTarget:     ' + printout.name + '\nALL:        ' + printout.all + ' \nWeaken:     ' + printout.wkn + ' \nHack:       ' + printout.hck + ' \nGrow:       ' + printout.grw + ' \nMoney:      ' + formatMoney(ns.getServerMoneyAvailable(printout.name) * HACKPERCENT) + '\nTTF:        ' + Math.ceil(ns.getWeakenTime(printout.name) / 1000) + 's\nOWNED ONLY: ' + PSERV_ONLY + '\n' + prnt_S + prnt_H);
+                ns.print('\nTarget:     ' + printout.name + '\nALL:        ' + printout.all + ' \nWeaken:     ' + printout.wkn + ' \nHack:       ' + printout.hck + ' \nGrow:       ' + printout.grw + ' \n$ stolen:   ' + formatMoney(ns.getServerMoneyAvailable(printout.name) * HACKPERCENT) + '\nSEC:        ' + printout.sec + '\nTTF:        ' + Math.ceil(ns.getWeakenTime(printout.name) / 1000) + 's\nOWNED ONLY: ' + PSERV_ONLY + '\n' + prnt_S + prnt_H);
             }
             else {
                 //ns.print('\nINFO: BATCH CANCELED\n');
