@@ -226,7 +226,7 @@ export async function main(ns) {
             current_batch = current_batch.filter(function (a) { return a !== 0; });
             for (let i = 0; i < current_batch.length; i++) {
                 if (!ns.kill(current_batch[i])) {
-                    ns.print('\nERROR: "ns.kill()" failed');
+                    ns.print('\nERROR: "ns.kill()" failed\n');
                 }
                 ;
                 batch_failed = true;
