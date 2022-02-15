@@ -47,22 +47,23 @@
     "todo-tree.regex.regex": "($TAGS)",
     // Custom bitburner words
     "cSpell.words": [
+        "Aevum",
         "bitburner",
         "bitnode",
         "bitnodes",
-        "hacknet",
-        "netscript",
-        "neuroflux",
-        "megacorp",
-        "megacorps",
-        "darkweb",
-        "Netburners",
         "Bladeburner",
         "Bladeburners",
-        "Tian", // Tian Di Hui
+        "darkweb",
+        "hacknet",
         "Ishima",
-        "Aevum",
-        "Volhaven",
-        "tprint"
+        "joesguns",
+        "megacorp",
+        "megacorps",
+        "Netburners",
+        "netscript",
+        "neuroflux",
+        "Tian",
+        "tprint",
+        "Volhaven"
     ]
 }

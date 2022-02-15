@@ -1,7 +1,10 @@
 {
     "recommendations": [
+        "bitburner.bitburner-vscode-integration",
         "dbaeumer.vscode-eslint",
-        "Gruntfuggly.auto-snippet",
-        "bitburner.bitburner-vscode-integration"
+        "eg2.vscode-npm-script",
+        "gruntfuggly.auto-snippet",
+        "gruntfuggly.todo-tree",
+        "streetsidesoftware.code-spell-checker"
     ]
 }
