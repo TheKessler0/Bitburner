@@ -3,5 +3,3 @@ export async function main(ns: NS): Promise<void> {
     await ns.sleep(ns.getHackTime(target) * 0.8);
     await ns.grow(target);
 }
-
-//this is a usefull comment
