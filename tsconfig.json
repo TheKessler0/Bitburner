@@ -2,7 +2,7 @@
   "include": [
     "NetscriptDefinitions.d.ts",
     "global.d.ts",
-    "src/*/", "src/batcher/batcher.js", "src/batcher/dependencies/1grow.js", "src/batcher/dependencies/1weaken.js", "src/batcher/dependencies/1hack.js", "src/batcher/tools/watcher.js", "src/batcher/tools/servinf.js",
+    "src/**/*",
   ],
   "compilerOptions": {
     "module": "esnext",
@@ -23,7 +23,7 @@
         ""
       ],
       "@ns": [
-        "C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions.d.ts"
+        "../NetscriptDefinitions.d.ts"
       ]
     }
   }

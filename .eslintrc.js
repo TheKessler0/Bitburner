@@ -1,26 +1,50 @@
 module.exports = {
     env: {
-        browser: true,
-        commonjs: true,
-        es6: false,
+        'browser': true,
+        'es2021': true,
+        'node': true
     },
     extends: [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"],
-    parser: "@typescript-eslint/parser",
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended'
+    ],
+    parser: '@typescript-eslint/parser',
     parserOptions: {
-        ecmaVersion: 8,
-        sourceType: "module",
-        ecmaFeatures: {
-            experimentalObjectRestSpread: true,
-        },
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: __dirname,
+        ecmaVersion: 'latest',
+        sourceType: 'module',
     },
-    plugins: ["@typescript-eslint"],
-    ignorePatterns: ['*.d.ts', '*.js'],
+    plugins: [
+        '@typescript-eslint'
+    ],
     rules: {
-        'no-constant-condition': ['off'],
-        "@typescript-eslint/no-floating-promises": "error",
-    }
+        'indent': ['warn', 4],
+        'quotes': ['error', 'single'],
+        //'semi': ['error', 'never'],
+        'no-multiple-empty-lines': ['warn', { max: 1, maxBOF: 0, maxEOF: 0}],
+        'no-trailing-spaces': 'warn',
+        'no-multi-spaces': 'warn',
+        'block-spacing': 'warn',
+        'space-before-blocks': 'warn',
+        'space-in-parens': 'warn',
+        'no-irregular-whitespace': 'warn',
+        'no-var': 'warn',
+        'prefer-const':'warn',
+        'no-constant-condition': 'off' // Current service worker implementation
+    },
+    'overrides': [
+        {
+            'files': ['*.ts'],
+            extends: [
+                'plugin:@typescript-eslint/recommended-requiring-type-checking'
+                // TODO Checkout https://typescript-eslint.io/docs/linting/
+            ],
+            parserOptions: {
+                tsconfigRootDir: __dirname,
+                project: ['./tsconfig.json']
+            },
+            rules : {
+                'no-constant-condition': 'off' // Current service worker implementation
+            }
+        }
+    ]
 }

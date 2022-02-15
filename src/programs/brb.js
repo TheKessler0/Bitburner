@@ -2,75 +2,75 @@
 
 export async function main(ns) {
 
-	ns.tail()
-	ns.disableLog('ALL')
+    ns.tail()
+    ns.disableLog('ALL')
 
-	const flags = ns.flags([
+    const flags = ns.flags([
         ['minutes', 0]
     ]);
 
-	let msg = ''
-	let msg_cnt = 0
+    let msg = ''
+    let msg_cnt = 0
 
-	flags._.forEach( function (a) {
-		if (a == '\\n') {
-			msg += '\n[MSG_' + ++msg_cnt + ']: '
-		}
-		else {
-			msg += a + ' '
-		}
-	});
+    flags._.forEach(function (a) {
+        if (a == '\\n') {
+            msg += '\n[MSG_' + ++msg_cnt + ']: '
+        }
+        else {
+            msg += a + ' '
+        }
+    });
 
-	if (msg != '') {msg = '[MSG_0]: ' + msg + '\n'}
+    if (msg != '') { msg = '[MSG_0]: ' + msg + '\n' }
 
-	const divisions = 60
-	const delay = (flags.minutes * 60 * 1000) / divisions;
+    const divisions = 60
+    const delay = (flags.minutes * 60 * 1000) / divisions;
 
-	let loadingbar = []
+    let loadingbar = []
 
-	for (let i = 0; i < divisions; i++) {
+    for (let i = 0; i < divisions; i++) {
 
-		loadingbar.push('[')
-		loadingbar[i] = loadingbar[i].padEnd(i + 1, '|')
-		loadingbar[i] = loadingbar[i].padEnd(divisions, '-') + ']'
-		loadingbar[i] = 'I´ll be back in aprox ' + (((delay / (1000 * 60)) * (divisions - i)).toFixed(2)).padStart(5,'0') + ' minutes!\n' + msg + loadingbar[i] + '\n'
+        loadingbar.push('[')
+        loadingbar[i] = loadingbar[i].padEnd(i + 1, '|')
+        loadingbar[i] = loadingbar[i].padEnd(divisions, '-') + ']'
+        loadingbar[i] = 'I´ll be back in aprox ' + (((delay / (1000 * 60)) * (divisions - i)).toFixed(2)).padStart(5,'0') + ' minutes!\n' + msg + loadingbar[i] + '\n'
 
-	}
+    }
 
-	for (let i = 0; i < loadingbar.length; i++) {
+    for (let i = 0; i < loadingbar.length; i++) {
 
-		ns.clearLog()
-		ns.print(loadingbar[i])
-		await ns.sleep(delay)
+        ns.clearLog()
+        ns.print(loadingbar[i])
+        await ns.sleep(delay)
 
-	}
+    }
 
-	loadingbar = []
+    loadingbar = []
 
-	for (let i = 0; i < divisions; i++) {
+    for (let i = 0; i < divisions; i++) {
 
-		loadingbar.push('[')
-		loadingbar[i] = loadingbar[i].padEnd(i, '|') + '.'
-		loadingbar[i] = loadingbar[i].padEnd(divisions, '|') + ']'
-		if (flags.minutes != 0) {
-			loadingbar[i] = 'I´ll be back in just a few secs...\n' + msg + loadingbar[i] + '\n'
-		}
-		else {
-			loadingbar[i] = '\n' + msg
-		}
+        loadingbar.push('[')
+        loadingbar[i] = loadingbar[i].padEnd(i, '|') + '.'
+        loadingbar[i] = loadingbar[i].padEnd(divisions, '|') + ']'
+        if (flags.minutes != 0) {
+            loadingbar[i] = 'I´ll be back in just a few secs...\n' + msg + loadingbar[i] + '\n'
+        }
+        else {
+            loadingbar[i] = '\n' + msg
+        }
 
-	}
+    }
 
-	for (let i = 0; i < loadingbar.length; i++) {
+    for (let i = 0; i < loadingbar.length; i++) {
 
-		ns.clearLog()
-		ns.print(loadingbar[i])
-		await ns.sleep(1000)
+        ns.clearLog()
+        ns.print(loadingbar[i])
+        await ns.sleep(1000)
 
-		if ( i == loadingbar.length - 1) {
-			i = 0
-		}
+        if (i == loadingbar.length - 1) {
+            i = 0
+        }
 
-	}
+    }
 
 }
