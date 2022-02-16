@@ -119,8 +119,7 @@ export async function main(ns : NS) : Promise<void> {
             }
         }
     }
-    /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
-    async function batch(ns: NS) {
+    async function batch(ns: NS): Promise<void> {
         const temp_weakentime = ns.getWeakenTime(TARGET);
         let current_batch = [];
         batch_failed = false;
@@ -231,8 +230,7 @@ export async function main(ns : NS) : Promise<void> {
             }
         }
     }
-    /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
-    async function startup(ns: NS) {
+    async function startup(ns: NS): Promise<void> {
         ALL = [];
         let stage1 = ['home'];
         for (let i = 0; i < stage1.length; i++) {
@@ -261,7 +259,7 @@ export async function main(ns : NS) : Promise<void> {
             await ns.sleep(0);
         }
     }
-    async function refresh(ns: NS) {
+    async function refresh(ns: NS): Promise<void> {
         CURRENT = ALL;
         const PORTS = {
             can_ssh: ns.fileExists('BruteSSH.exe'),
@@ -308,8 +306,7 @@ export async function main(ns : NS) : Promise<void> {
         }
         CURRENT = CURRENT.filter(function (a) { return (ns.hasRootAccess(a.name)); });
     }
-    /**@param ns{NS} */
-    async function Server(ns: NS) {
+    async function Server(ns: NS): Promise<string> {
         let prnt = '';
         let servers: { name: string;ram: number }[] = [];
         for (let i = 0; i < 25; i++) {
@@ -355,15 +352,12 @@ export async function main(ns : NS) : Promise<void> {
         }
         return prnt;
     }
-    /**@param ns{NS} */
-    async function Hacknet(ns: NS) {
+    async function Hacknet(ns: NS): Promise<string> {
         let nothing_to_do = false;
         let prnt = '';
-        //get first node
         if (ns.hacknet.numNodes() == 0) {
             ns.hacknet.purchaseNode();
         }
-        //lööp
         for (let i = 0; !nothing_to_do && i <= 24; i++) {
             let index_lvl = 0;
             let index_ram = 0;
@@ -418,7 +412,7 @@ export async function main(ns : NS) : Promise<void> {
         return prnt;
     }
 
-    function formatMoney(money: number) {
+    function formatMoney(money: number): string {
         if (money >= 10 ** 15) { return ('$' + (money / 10 ** 15).toFixed(2) + 's') }
         if (money >= 10 ** 12) { return ('$' + (money / 10 ** 12).toFixed(2) + 'q') }
         if (money >= 10 ** 9) { return ('$' + (money / 10 ** 9).toFixed(2) + 't') }
