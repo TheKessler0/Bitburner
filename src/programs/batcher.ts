@@ -1,9 +1,10 @@
-/** @param {import('@ns').NS} ns */
-export async function main(ns) {
+import { NS } from '@ns';
+
+export async function main(ns : NS) : Promise<void> {
     ns.exec('/programs/tools/watcher.js', 'home');
     ns.exec('/programs/tools/servinf.js', 'home');
-    let ALL = [];
-    let CURRENT = [];
+    let ALL: any[] = [];
+    let CURRENT: any[] = [];
     const SCRIPTS = {
         HCK: '/programs/dependencies/1hack.js',
         GRW: '/programs/dependencies/1grow.js',
@@ -119,7 +120,7 @@ export async function main(ns) {
         }
     }
     /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
-    async function batch(ns) {
+    async function batch(ns: NS) {
         const temp_weakentime = ns.getWeakenTime(TARGET);
         let current_batch = [];
         batch_failed = false;
@@ -231,7 +232,7 @@ export async function main(ns) {
         }
     }
     /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
-    async function startup(ns) {
+    async function startup(ns: NS) {
         ALL = [];
         let stage1 = ['home'];
         for (let i = 0; i < stage1.length; i++) {
@@ -260,8 +261,7 @@ export async function main(ns) {
             await ns.sleep(0);
         }
     }
-    /** @param {import("C:/Users/lfrit/Desktop/Birburner/Bitburner/NetscriptDefinitions").NS } ns */
-    async function refresh(ns) {
+    async function refresh(ns: NS) {
         CURRENT = ALL;
         const PORTS = {
             can_ssh: ns.fileExists('BruteSSH.exe'),
@@ -271,7 +271,7 @@ export async function main(ns) {
             can_sql: ns.fileExists('SQLInject.exe'),
             possible: 0
         };
-        PORTS.possible = PORTS.can_ssh + PORTS.can_ftp + PORTS.can_smtp + PORTS.can_http + PORTS.can_sql;
+        PORTS.possible = ([PORTS.can_ssh,PORTS.can_ftp,PORTS.can_smtp,PORTS.can_http,PORTS.can_sql].filter(function (a) { return a})).length
         for (let i = 0; i < CURRENT.length; i++) {
             if (!ns.hasRootAccess(CURRENT[i].name) && ns.getServerNumPortsRequired(CURRENT[i].name) <= PORTS.possible) {
                 if (PORTS.can_ssh) {
@@ -303,15 +303,15 @@ export async function main(ns) {
             CURRENT[i].left = Math.floor((ns.getServerMaxRam(CURRENT[i].name) - ns.getServerUsedRam(CURRENT[i].name)) / SCRIPTS.CST);
             CURRENT[i].security = ns.getServerSecurityLevel(CURRENT[i].name) - ns.getServerMinSecurityLevel(CURRENT[i].name);
             CURRENT[i].value = 1;
-            CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name, 0.95) * ns.formulas.hacking.hackChance(fakeServer, ns.getPlayer());
+            CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name) * ns.formulas.hacking.hackChance(fakeServer, ns.getPlayer());
             CURRENT[i].value /= ns.formulas.hacking.weakenTime(fakeServer, ns.getPlayer());
         }
         CURRENT = CURRENT.filter(function (a) { return (ns.hasRootAccess(a.name)); });
     }
     /**@param ns{NS} */
-    async function Server(ns) {
+    async function Server(ns: NS) {
         let prnt = '';
-        let servers = [];
+        let servers: { name: string;ram: number }[] = [];
         for (let i = 0; i < 25; i++) {
             servers.push({
                 name: '',
@@ -356,7 +356,7 @@ export async function main(ns) {
         return prnt;
     }
     /**@param ns{NS} */
-    async function Hacknet(ns) {
+    async function Hacknet(ns: NS) {
         let nothing_to_do = false;
         let prnt = '';
         //get first node
@@ -418,12 +418,12 @@ export async function main(ns) {
         return prnt;
     }
 
-    function formatMoney(money) {
+    function formatMoney(money: number) {
         if (money >= 10 ** 15) { return ('$' + (money / 10 ** 15).toFixed(2) + 's') }
         if (money >= 10 ** 12) { return ('$' + (money / 10 ** 12).toFixed(2) + 'q') }
         if (money >= 10 ** 9) { return ('$' + (money / 10 ** 9).toFixed(2) + 't') }
         if (money >= 10 ** 6) { return ('$' + (money / 10 ** 6).toFixed(2) + 'm') }
         if (money >= 10 ** 3) { return ('$' + (money / 10 ** 3).toFixed(2) + 'k') }
-        if (money >= 10 ** 0) { return ('$' + (money / 10 ** 0).toFixed(2) + ' ') }
+        return ('$' + (money / 10 ** 0).toFixed(2) + ' ')
     }
 }

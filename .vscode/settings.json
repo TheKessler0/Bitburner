@@ -55,6 +55,7 @@
         "Bladeburners",
         "darkweb",
         "hacknet",
+        "HSERV",
         "Ishima",
         "joesguns",
         "megacorp",
@@ -62,9 +63,12 @@
         "Netburners",
         "netscript",
         "neuroflux",
+        "prnt",
         "PSERV",
         "Tian",
         "tprint",
         "Volhaven"
-    ]
+    ],
+    "cSpell.allowCompoundWords": true,
+    "cSpell.language": "en,de"
 }

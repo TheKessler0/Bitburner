@@ -14,18 +14,18 @@ export async function main(ns : NS) : Promise<void> {
         let prnt = '\n'
 
         prnt += getPRNTsimple(HSERVnames)
-        prnt += '\n'
         prnt += getPRNTsimple(PSERVnames)
-        prnt += ('\n').padStart(29,'=')
+        prnt += ('\n').padStart(28,'=')
         prnt += getPRNTcomplex(HSERVnames,PSERVnames)
-        prnt += padding('Home', formatSize(ns.getServerMaxRam('home')),Math.ceil((ns.getServerUsedRam('home') / ns.getServerMaxRam('home')) * 100) + ' %')
+        prnt += '\n'
+        prnt += padding('HOME', formatSize(ns.getServerMaxRam('home')),Math.ceil((ns.getServerUsedRam('home') / ns.getServerMaxRam('home')) * 100) + ' %')
 
         ns.print(prnt)
 
         await ns.sleep(1000)
     }
 
-    function getPRNTsimple (names) {
+    function getPRNTsimple (names: string[]) {
 
         let result = ''
 
@@ -37,17 +37,17 @@ export async function main(ns : NS) : Promise<void> {
 
     }
 
-    function padding (name, size, utilization) {
-        return (name).padEnd(6,' ') + (size).padStart(12,' ') + (utilization).padStart(10,' ') + '\n'
+    function padding (name: string, size: string, utilization: string) {
+        return (name).padEnd(5,' ') + (size).padStart(12,' ') + (utilization).padStart(10,' ') + '\n'
     }
 
-    function getsize (name) {
-        if (!ns.serverExists(name)) { return ('------ GB') }
+    function getsize (name: string) {
+        if (!ns.serverExists(name)) { return ('---- GB') }
 
         return formatSize(ns.getServerMaxRam(name))
     }
 
-    function formatSize (rawGB) {
+    function formatSize (rawGB: number) {
 
         if (rawGB >= 2**30) { return ((rawGB / (2**30)).toFixed(2) + ' EB') }
         if (rawGB >= 2**20) { return ((rawGB / (2**20)).toFixed(2) + ' PB') }
@@ -56,14 +56,14 @@ export async function main(ns : NS) : Promise<void> {
         return ((rawGB).toFixed(2) + ' GB')
     }
 
-    function getused (name) {
+    function getused (name: string) {
 
-        if (!ns.serverExists(name)) { return ('--- %') }
+        if (!ns.serverExists(name)) { return ('-- %') }
 
         return (Math.ceil((ns.getServerUsedRam(name) / ns.getServerMaxRam(name)) * 100) + ' %')
     }
 
-    function getPRNTcomplex (array1, array2) {
+    function getPRNTcomplex (array1: string[], array2: string[]) {
         const names = [...array1, ...array2]
         let size = 0
         let used = 0
