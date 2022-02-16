@@ -321,8 +321,8 @@ export async function main(ns : NS) : Promise<void> {
         }
         servers = servers.sort(function (a, b) { return a.ram - b.ram; });
         let maxram = 2 ** 20;
-        for (let i = 20; ns.getPurchasedServerCost(maxram) > ns.getPlayer().money && i > 1; i--) {
-            maxram = 2 ** i;
+        for (let i = 20; ns.getPurchasedServerCost(maxram) > ns.getPlayer().money && i > 1; i -= 2) {
+            maxram = Math.min(2 ** i, 2**2);
         }
         if (maxram == 0 || servers[0].ram == 2 ** 20 || ns.getPurchasedServerCost(maxram) > ns.getPlayer().money) {
             return prnt;
