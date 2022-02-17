@@ -3,6 +3,7 @@ import { NS } from '@ns';
 export async function main(ns : NS) : Promise<void> {
 
     ns.disableLog('ALL')
+    ns.tail()
 
     const HSERVnames = /**Hacknet-Server names*/ ['H01','H02','H03','H04','H05','H06','H07','H08','H09','H10','H11','H12','H13','H14','H15','H16','H17','H18','H19','H20']
     const PSERVnames = /**Player-Server names */ ['S01','S02','S03','S04','S05','S06','S07','S08','S09','S10','S11','S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','S22','S23','S24','S25']
@@ -75,7 +76,8 @@ export async function main(ns : NS) : Promise<void> {
             }
         }
         used = Math.ceil((used / size) * 100)
-        if (used == Infinity) { used = 0 }
+
+        if (!Number.isFinite(used)) { used = 0 }
 
         return padding('ALL',formatSize(size), Math.ceil(used) + ' %')
 

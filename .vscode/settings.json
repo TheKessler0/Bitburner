@@ -21,10 +21,10 @@
     ],
     // Lint/Format stuff
     "[javascript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "[typescript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "eslint.format.enable": true,
     "eslint.validate": [
