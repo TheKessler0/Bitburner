@@ -138,12 +138,12 @@ export async function main(ns : NS) : Promise<void> {
                 if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
             }
         }
-        await ns.sleep(50); //catch-up time
+        await ns.sleep(75); //catch-up time
         while (NEEDED_GRW > 0 && !batch_failed) {
             let n_grw = 0;
             const current_batch = [];
 
-            await ns.sleep(50)
+            await ns.sleep(75)
 
             CURRENT = CURRENT.sort(function (a, b) { return b.left - a.left; });
             for (let i = 0; NEEDED_GRW > 0 && !batch_failed; i++) {
@@ -162,7 +162,7 @@ export async function main(ns : NS) : Promise<void> {
                     break;
                 }
             }
-            await ns.sleep(50);
+            await ns.sleep(75);
             CURRENT = CURRENT.sort(function (a, b) { return a.left - b.left; });
             for (let i = 0; i < CURRENT.length && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
@@ -178,7 +178,7 @@ export async function main(ns : NS) : Promise<void> {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
                 }
             }
-            await ns.sleep(50);
+            await ns.sleep(75);
         }
         while (NEEDED_HCK > 0 && !batch_failed) {
             let n_hck = 0;
@@ -199,7 +199,7 @@ export async function main(ns : NS) : Promise<void> {
                     break;
                 }
             }
-            await ns.sleep(50);
+            await ns.sleep(75);
             for (let i = 0; i < CURRENT.length && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
                     ns.tprint('ERROR: WKN ' + TARGET);
@@ -214,20 +214,17 @@ export async function main(ns : NS) : Promise<void> {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
                 }
             }
-            await ns.sleep(50);
-        }
-        if (temp_weakentime != ns.getWeakenTime(TARGET)) {
-            batch_failed = true;
+            await ns.sleep(75);
         }
 
-        if (batch_failed || current_batch.includes(0)) {
+        if (batch_failed || current_batch.includes(0) || temp_weakentime != ns.getWeakenTime(TARGET)) {
             current_batch = current_batch.filter(function (a) { return a !== 0; });
             for (let i = 0; i < current_batch.length; i++) {
                 if (!ns.kill(current_batch[i])) {
                     ns.print('\nERROR: "ns.kill()" failed\n');
                 }
-                batch_failed = true;
             }
+            await ns.sleep(Math.min(10000,Math.ceil(ns.getWeakenTime(TARGET) / 2)))
         }
     }
     async function startup(ns: NS): Promise<void> {
@@ -334,7 +331,7 @@ export async function main(ns : NS) : Promise<void> {
                 prnt = 'RESERVING:  ' + servers[0].name + '\n';
                 if (ns.getServerUsedRam(servers[0].name) == 0) {
                     ns.deleteServer(servers[0].name);
-                    await ns.sleep(100);
+                    await ns.sleep(75);
                     ns.purchaseServer(servers[0].name, maxram);
                     await ns.scp([SCRIPTS.GRW, SCRIPTS.HCK, SCRIPTS.WKN], 'home', servers[0].name);
                     prnt = 'UPGRADED:   ' + servers[0].name + '\n';
@@ -342,7 +339,7 @@ export async function main(ns : NS) : Promise<void> {
             }
             else {
                 ns.purchaseServer(servers[0].name, maxram);
-                await ns.sleep(100);
+                await ns.sleep(75);
                 await ns.scp([SCRIPTS.GRW, SCRIPTS.HCK, SCRIPTS.WKN], 'home', servers[0].name);
                 prnt = 'BOUGHT ' + servers[0].name + '\n';
                 await startup(ns);
