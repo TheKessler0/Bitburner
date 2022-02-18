@@ -23,6 +23,7 @@ export async function main(ns : NS) : Promise<void> {
     let PSERV_ONLY = false;
     let batchcount = 0;
     let batch_failed = false;
+
     const flags = ns.flags([
         ['tresh', 500],
         ['server', false],
@@ -33,7 +34,7 @@ export async function main(ns : NS) : Promise<void> {
     ns.disableLog('ALL');
     ns.clearLog();
     ns.tail();
-    ns.print('\ntresh:   ' + flags.tresh + '\nserver:  ' + flags.server + '\nhacknet: ' + flags.hacknet + '\n');
+    ns.print(`\ntresh:   ${flags.tresh}\nserver:  ${flags.server}\nhacknet: ${flags.hacknet}\n`);
     await startup(ns);
     await ns.sleep(5000);
     while (true) {
@@ -349,7 +350,7 @@ export async function main(ns : NS) : Promise<void> {
         }
         return prnt;
     }
-    async function Hacknet(ns: NS): Promise<string> {
+    function Hacknet(ns: NS) {
         let nothing_to_do = false;
         let prnt = '';
         if (ns.hacknet.numNodes() == 0) {

@@ -28,8 +28,8 @@ module.exports = {
         'space-in-parens': 'warn',
         'no-irregular-whitespace': 'warn',
         'no-var': 'warn',
-        'restrict-plus-operands': 0,
-        'checkCompoundAssignments': 0,
+        'restrict-plus-operands': false,
+        'checkCompoundAssignments': false,
         'prefer-const':'warn',
         'no-constant-condition': 'off' // Current service worker implementation
     },
