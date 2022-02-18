@@ -20,7 +20,7 @@ export async function main(ns : NS) : Promise<void> {
         for (let i = 0; i < servers.length; i++) {
             const threads = Math.floor((ns.getServerMaxRam(servers[i]) - ns.getServerUsedRam(servers[i])) / ns.getScriptRam(script))
             if (threads > 0) {
-                allThreads += threads   
+                allThreads += threads
                 ns.exec(script,servers[i],threads)
                 prnt += (`\n${servers[i]}: ${formatNumber(threads)} threads`)
             }
@@ -34,10 +34,10 @@ export async function main(ns : NS) : Promise<void> {
     }
 
     function formatNumber (num : number): string {
-        if (num >= 10**12) {return ((num / 10**12).toFixed(2) + 'q').padStart(7,' ')}
-        if (num >= 10**9) {return ((num / 10**9).toFixed(2) + 't').padStart(7,' ')}
-        if (num >= 10**6) {return ((num / 10**6).toFixed(2) + 'm').padStart(7,' ')}
-        if (num >= 10**3) {return ((num / 10**3).toFixed(2) + 'k').padStart(7,' ')}
+        if (num >= 10**12) { return ((num / 10**12).toFixed(2) + 'q').padStart(7,' ') }
+        if (num >= 10**9) { return ((num / 10**9).toFixed(2) + 't').padStart(7,' ') }
+        if (num >= 10**6) { return ((num / 10**6).toFixed(2) + 'm').padStart(7,' ') }
+        if (num >= 10**3) { return ((num / 10**3).toFixed(2) + 'k').padStart(7,' ') }
         return ((num).toFixed(0) + '').padStart(7,' ')
     }
 
