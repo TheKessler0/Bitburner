@@ -61,7 +61,7 @@ export async function main(ns : NS) : Promise<void> {
             prnt_S = await Server(ns);
         }
         if (flags.hacknet) {
-            prnt_H = await Hacknet(ns);
+            prnt_H = Hacknet(ns);
         }
         let temp = CURRENT;
         if (PSERV_ONLY) {
@@ -319,14 +319,13 @@ export async function main(ns : NS) : Promise<void> {
         }
         servers = servers.sort(function (a, b) { return a.ram - b.ram; });
         let maxram = 2 ** 20;
-        for (let i = 20; ns.getPurchasedServerCost(maxram) > ns.getPlayer().money && i > 1; i -= 2) {
-            maxram = Math.min(2 ** i, 2**2);
+        for (let i = 20; ns.getPurchasedServerCost(maxram) > ns.getPlayer().money && i >= 2; i -= 1) {
+            maxram = 2 ** i
         }
         if (maxram == 0 || servers[0].ram == 2 ** 20 || ns.getPurchasedServerCost(maxram) > ns.getPlayer().money) {
             return prnt;
         }
         if (maxram > servers[0].ram) {
-            //if server already exists, kill all scripts and delete it
             if (ns.serverExists(servers[0].name)) {
                 CURRENT = CURRENT.filter(function (a) { return a.name != servers[0].name; });
                 prnt = 'RESERVING:  ' + servers[0].name + '\n';
