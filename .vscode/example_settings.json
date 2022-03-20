@@ -1,0 +1,85 @@
+{
+    // Biturner extension settings
+    "bitburner.authToken": "",
+    "bitburner.fileWatcher.enable": true,
+    "bitburner.scriptRoot": "./dist/",
+    "bitburner.showFileWatcherEnabledNotification": true,
+    "bitburner.showPushSuccessNotification": true,
+    // Use non relative imports so the game can find files in it's fake directory structure.
+    // TODO https://github.com/microsoft/vscode/issues/97135
+    // TODO https://stackoverflow.com/questions/37747938/visual-studio-code-apply-rename-file-refactoring-in-all-es6-imports
+    "javascript.preferences.importModuleSpecifier": "non-relative",
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    // Autosave Settings
+    "files.autoSave": "onWindowChange",
+    // Autosnippet settings
+    "autoSnippet.snippets": [
+        {
+            "pattern": "**/*.ts",
+            "snippet": "ns-template"
+        },
+    ],
+    // Lint/Format stuff
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "eslint.format.enable": true,
+    "eslint.validate": [
+        "javascript",
+        "typescript"
+    ],
+    "eslint.alwaysShowStatus": true, // Debug
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+        "source.organizeImports": true
+    },
+    // TODO List
+    "todo-tree.filtering.excludeGlobs": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/.vscode/**"
+    ],
+    "todo-tree.highlights.useColourScheme": true,
+    "todo-tree.tree.showCountsInTree": true,
+    "todo-tree.regex.regex": "($TAGS)",
+    // Custom bitburner words
+    "cSpell.words": [
+        "Aevum",
+        "allBackdoored",
+        "avmnite-02h",
+        "bitburner",
+        "bitnode",
+        "bitnodes",
+        "Bladeburner",
+        "Bladeburners",
+        "CSEC",
+        "darkweb",
+        "hacknet",
+        "HSERV",
+        "I",
+        "Ishima",
+        "joesguns",
+        "katze",
+        "lfrit",
+        "megacorp",
+        "megacorps",
+        "Netburners",
+        "netscript",
+        "neuroflux",
+        "opyright",
+        "prnt",
+        "PSERV",
+        "relaysmtp",
+        "run4theh111z",
+        "servinf",
+        "Tian",
+        "tprint",
+        "tresh",
+        "Volhaven"
+    ],
+    "cSpell.allowCompoundWords": true,
+    "cSpell.language": "en,de"
+}
