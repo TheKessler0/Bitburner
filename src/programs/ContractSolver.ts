@@ -1,5 +1,6 @@
-/** @param {NS} ns **/
-export async function main(ns: { tail: () => void; disableLog: (arg0: string) => void; clearLog: () => void; print: (arg0: string) => void; }) {
+import { NS } from '@ns';
+
+export async function main(ns: NS) {
 	ns.tail();
 	ns.disableLog('ALL');
 	ns.clearLog();
@@ -11,9 +12,7 @@ export async function main(ns: { tail: () => void; disableLog: (arg0: string) =>
 		await ns.sleep(60000)
 	}
 
-
-	/** @param {NS} ns **/
-	async function dfs(ns: { scan: (arg0: any) => any; }, parent: null, current: string, f: { (ns: any, host: any, depth: any): Promise<void>; (arg0: any, arg1: any, arg2: any, arg3: any): any; }, depth: number, ...args: undefined[]) {
+	async function dfs(ns: NS, parent: null, current: string, f: { (ns: any, host: any, depth: any): Promise<void>; (arg0: any, arg1: any, arg2: any, arg3: any): any; }, depth: number, ...args: undefined[]) {
 		var hosts = ns.scan(current);
 		if (parent != null) {
 			const index = hosts.indexOf(parent);
@@ -30,8 +29,7 @@ export async function main(ns: { tail: () => void; disableLog: (arg0: string) =>
 		}
 	}
 
-	/** @param {NS} ns **/
-	async function trySolveContracts(ns: { ls: (arg0: any, arg1: string) => any; }, host: any, depth: any) {
+	async function trySolveContracts(ns: NS, host: any, depth: any) {
 		var contracts = ns.ls(host, "cct");
 
 		for (var contract of contracts) {
@@ -41,7 +39,7 @@ export async function main(ns: { tail: () => void; disableLog: (arg0: string) =>
 
 	}
 
-	function solveContract(ns: { codingcontract: { getContractType: (arg0: any, arg1: any) => any; getDescription: (arg0: any, arg1: any) => any; getData: (arg0: any, arg1: any) => any; attempt: (arg0: any, arg1: any, arg2: any, arg3: {}) => any; }; print: (arg0: string) => void; }, host: string, filename: string, logLevel = 0) {
+	function solveContract(ns: NS, host: string, filename: string, logLevel = 0) {
 		var type = ns.codingcontract.getContractType(filename, host);
 		var desc = ns.codingcontract.getDescription(filename, host);
 		var data = ns.codingcontract.getData(filename, host);
@@ -112,8 +110,7 @@ export async function main(ns: { tail: () => void; disableLog: (arg0: string) =>
 		} else {
 			ns.print(answer);
 		}
-		var opts = {};
-		opts.returnReward = true;
+		var opts = { returnReward: true };
 		var reward = ns.codingcontract.attempt(answer, filename, host, opts);
 		if (reward) {
 			ns.print(reward + '\n ');
@@ -348,7 +345,7 @@ export async function main(ns: { tail: () => void; disableLog: (arg0: string) =>
 		if (arr.length == 1) {
 			return arr[0];
 		}
-		var sum = findMaxSubArraySum(arr.slice(1));
+		var sum: any = findMaxSubArraySum(arr.slice(1));
 		var s = 0;
 		for (var i = 0; i < arr.length; i++) {
 			s += arr[i];
