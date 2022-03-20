@@ -21,6 +21,7 @@ export async function main(ns : NS) : Promise<void> {
     let NEEDED_ALL = 0;
     let THREADS = 0;
     let FLUFFY = 0;
+    let hasFormulas = ns.fileExists("Formulas.exe", 'home');
     let PSERV_ONLY = false;
     let batchcount = 0;
     let batch_failed = false;
@@ -43,6 +44,7 @@ export async function main(ns : NS) : Promise<void> {
         await ns.sleep(0);
         if (batchcount >= 25) {
             batchcount = 0;
+            hasFormulas = ns.fileExists("Formulas.exe", 'home');
             ns.print('\nINFO: sleeping for 10s\n');
             await ns.sleep(10000);
         }
@@ -295,15 +297,26 @@ export async function main(ns : NS) : Promise<void> {
 
                 ns.nuke(CURRENT[i].name);
             }
-            const fakeServer = ns.getServer(CURRENT[i].name);
-            fakeServer.hackDifficulty = fakeServer.minDifficulty
-            fakeServer.moneyAvailable = fakeServer.moneyMax
 
-            CURRENT[i].left = Math.floor((ns.getServerMaxRam(CURRENT[i].name) - ns.getServerUsedRam(CURRENT[i].name)) / SCRIPTS.CST);
-            CURRENT[i].security = ns.getServerSecurityLevel(CURRENT[i].name) - ns.getServerMinSecurityLevel(CURRENT[i].name);
-            CURRENT[i].value = 1;
-            CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name) * ns.formulas.hacking.hackChance(fakeServer, ns.getPlayer());
-            CURRENT[i].value /= ns.formulas.hacking.weakenTime(fakeServer, ns.getPlayer());
+            if (hasFormulas) {
+                const fakeServer = ns.getServer(CURRENT[i].name);
+                fakeServer.hackDifficulty = fakeServer.minDifficulty
+                fakeServer.moneyAvailable = fakeServer.moneyMax
+
+                CURRENT[i].left = Math.floor((ns.getServerMaxRam(CURRENT[i].name) - ns.getServerUsedRam(CURRENT[i].name)) / SCRIPTS.CST);
+                CURRENT[i].security = ns.getServerSecurityLevel(CURRENT[i].name) - ns.getServerMinSecurityLevel(CURRENT[i].name);
+                CURRENT[i].value = 1;
+                CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name) * ns.formulas.hacking.hackChance(fakeServer, ns.getPlayer());
+                CURRENT[i].value /= ns.formulas.hacking.weakenTime(fakeServer, ns.getPlayer());
+            }
+            else {
+                CURRENT[i].left = Math.floor((ns.getServerMaxRam(CURRENT[i].name) - ns.getServerUsedRam(CURRENT[i].name)) / SCRIPTS.CST);
+                CURRENT[i].security = ns.getServerSecurityLevel(CURRENT[i].name) - ns.getServerMinSecurityLevel(CURRENT[i].name);
+                CURRENT[i].value = 1;
+                CURRENT[i].value *= ns.getServerMaxMoney(CURRENT[i].name) * ns.hackAnalyze(CURRENT[i].name);
+                CURRENT[i].value /= ns.getWeakenTime(CURRENT[i].name);
+            }
+
         }
         CURRENT = CURRENT.filter(function (a) { return (ns.hasRootAccess(a.name)); });
     }
