@@ -3,4 +3,4 @@ NetscriptDefinitions.d.ts
 src/lib/constants.ts
 package-lock.json
 # .vscode/
-vscode/settings.json
+.vscode/settings.json
