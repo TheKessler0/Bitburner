@@ -3,6 +3,7 @@ import { NS } from '@ns';
 export async function main(ns : NS) : Promise<void> {
     ns.exec('/programs/tools/watcher.js', 'home');
     ns.exec('/programs/tools/servinf.js', 'home');
+    ns.exec('/programs/ContractSolver.js','home')
     let ALL: any[] = [];
     let CURRENT: any[] = [];
     const SCRIPTS = {
@@ -23,7 +24,7 @@ export async function main(ns : NS) : Promise<void> {
     let PSERV_ONLY = false;
     let batchcount = 0;
     let batch_failed = false;
-    const batchtime = 50; //ms   delay between parts of the current batch
+    const batchtime = 55; //ms   delay between parts of the current batch
 
     const flags = ns.flags([
         ['tresh', 500],
@@ -40,7 +41,7 @@ export async function main(ns : NS) : Promise<void> {
     await ns.sleep(5000);
     while (true) {
         await ns.sleep(0);
-        if (batchcount >= Infinity) {
+        if (batchcount >= 25) {
             batchcount = 0;
             ns.print('\nINFO: sleeping for 10s\n');
             await ns.sleep(10000);
@@ -114,7 +115,7 @@ export async function main(ns : NS) : Promise<void> {
             await batch(ns);
             if (!batch_failed) {
                 batchcount++;
-                ns.print('\nTarget:     ' + printout.name + '\nALL:        ' + printout.all + ' \nWeaken:     ' + printout.wkn + ' \nHack:       ' + printout.hck + ' \nGrow:       ' + printout.grw + ' \n$ stolen:   ' + formatMoney(ns.getServerMoneyAvailable(printout.name) * HACKPERCENT) + '\nSEC:        ' + printout.sec + '\nTTF:        ' + Math.ceil(ns.getWeakenTime(printout.name) / 1000) + 's\nOWNED ONLY: ' + PSERV_ONLY + '\n' + prnt_S + prnt_H);
+                ns.print('\nTarget:     ' + ((printout.name.length > 10 ) ? printout.name.substring(0,10) + '…' : printout.name) + '\nALL:        ' + printout.all + ' \nWeaken:     ' + printout.wkn + ' \nHack:       ' + printout.hck + ' \nGrow:       ' + printout.grw + ' \n$ stolen:   ' + formatMoney(ns.getServerMoneyAvailable(printout.name) * HACKPERCENT) + '\nSEC:        ' + printout.sec + '\nTTF:        ' + Math.ceil(ns.getWeakenTime(printout.name) / 1000) + 's\nOWNED ONLY: ' + PSERV_ONLY + '\n' + prnt_S + prnt_H);
             }
             else {
                 //ns.print('\nINFO: BATCH CANCELED\n');

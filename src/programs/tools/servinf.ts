@@ -12,15 +12,14 @@ export async function main(ns : NS) : Promise<void> {
 
         ns.clearLog()
 
-        let prnt = '\n'
-
-        prnt += getPRNTsimple(HSERVnames)
-        prnt += getPRNTsimple(PSERVnames)
-        prnt += ('\n').padStart(28,'=')
-        prnt += getPRNTcomplex(HSERVnames,PSERVnames)
-        prnt += '\n'
-        prnt += padding('HOME', formatSize(ns.getServerMaxRam('home')),Math.ceil((ns.getServerUsedRam('home') / ns.getServerMaxRam('home')) * 100) + ' %')
-
+        let prnt = (`
+        ${getPRNTsimple(HSERVnames)}
+        ${getPRNTsimple(PSERVnames)}
+        ${('\n').padStart(28, '=')}
+        ${getPRNTcomplex(HSERVnames, PSERVnames)}
+        
+        ${padding('HOME', formatSize(ns.getServerMaxRam('home')), Math.ceil((ns.getServerUsedRam('home') / ns.getServerMaxRam('home')) * 100) + ' %')}        
+        `).replace(/(\n)\s+/g, '$1');
         ns.print(prnt)
 
         await ns.sleep(1000)
