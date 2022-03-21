@@ -1,0 +1,4 @@
+import { BatcherConfig as BC } from "config/batcher.config";
+// Aufruf
+BC.ATTACKS.GRW;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGVzdGNvbmZpZy5qcyIsInNvdXJjZVJvb3QiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvc291cmNlcy8iLCJzb3VyY2VzIjpbImNvbmZpZy90ZXN0Y29uZmlnLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxhQUFhLElBQUksRUFBRSxFQUFFLE1BQU0sdUJBQXVCLENBQUM7QUFFNUQsU0FBUztBQUNULEVBQUUsQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFBIn0=
