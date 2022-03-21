@@ -25,7 +25,9 @@ export async function main(ns : NS) : Promise<void> {
     let PSERV_ONLY = false;
     let batchcount = 0;
     let batch_failed = false;
-    const batchtime = 55; //ms   delay between parts of the current batch
+    let batchtime = 55; //ms   delay between parts of the current batch
+    let batchcountTresh = 25
+    let sleeptime = 10000
 
     const flags = ns.flags([
         ['tresh', 500],
@@ -42,12 +44,16 @@ export async function main(ns : NS) : Promise<void> {
     await ns.sleep(5000);
     while (true) {
         await ns.sleep(0);
-        if (batchcount >= 25) {
+
+
+        if (batchcount >= batchcountTresh) {
             batchcount = 0;
             hasFormulas = ns.fileExists("Formulas.exe", 'home');
-            ns.print('\nINFO: sleeping for 10s\n');
-            await ns.sleep(10000);
+            ns.print('\nINFO: sleeping for ' + (sleeptime / 1000) + 's\n');
+            await ns.sleep(sleeptime);
         }
+
+
         let pserv_threads = 0;
         for (let i = 0; i < ns.getPurchasedServers().length && !PSERV_ONLY; i++) {
             pserv_threads += Math.floor((ns.getServerMaxRam(ns.getPurchasedServers()[i])) / SCRIPTS.CST);
@@ -124,6 +130,15 @@ export async function main(ns : NS) : Promise<void> {
             }
         }
     }
+
+    async function read_config(): Promise<void> {
+
+        const raw_data = ns.read("/programs/dependencies/batcher_config.txt") //TODO: this
+
+
+
+    }
+
     async function batch(ns: NS): Promise<void> {
         const temp_weakentime = ns.getWeakenTime(TARGET);
         let current_batch = [];
