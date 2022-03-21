@@ -32,6 +32,6 @@ export function getUserland() : Promise<any> {
         hacknet: false              //upgrade Hacknet?
     };
 
-    return USERLAND
+    return USERLAND     //TODO somebody fix this shit  ;P
 
 }
