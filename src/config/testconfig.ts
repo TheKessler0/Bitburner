@@ -1,8 +1,11 @@
 export async function main(ns : NS) {
 
-    let config = await parseConfig()
+    ns.tprint('ERROR: this is only a example, not meant to be executed!')
+    ns.exit()
 
-    ns.tprint(typeof config)
+
+    let config = await parseConfig()
+    ns.tprint(typeof config, + '\n')
     ns.tprint(config)
 
     async function parseConfig(): Promise < object >{

@@ -1,16 +1,32 @@
 import { NS } from '@ns';
 
 export async function main(ns : NS) : Promise<void> {
-    ns.exec('/programs/tools/watcher.js', 'home');
-    ns.exec('/programs/tools/servinf.js', 'home');
-    ns.exec('/programs/ContractSolver.js','home')
+
+    interface configValues {
+        HCK: string;
+        WKN: string;
+        GRW: string;
+        StartOnce: string[];
+        batchtime: number;
+        batchcountTresh: number;
+        sleeptime: number;
+        tresh: number;
+        PSERV_ONLY: boolean;
+        server: boolean;
+        hacknet: boolean;
+    }
+
+    let config = await parseConfig();
+
+    config.StartOnce.forEach( function (a) { ns.exec(a,'home'); });
+
     let ALL: any[] = [];
     let CURRENT: any[] = [];
     const SCRIPTS = {
-        HCK: '/programs/dependencies/1hack.js',
-        GRW: '/programs/dependencies/1grow.js',
-        WKN: '/programs/dependencies/1weaken.js',
-        CST: 1.80 // GB
+        HCK: config.HCK,
+        GRW: config.GRW,
+        WKN: config.WKN,
+        CST: Math.max(ns.getScriptRam(config.HCK),ns.getScriptRam(config.GRW),ns.getScriptRam(config.WKN))
     };
     let TARGET = '';
     let NEEDED_HCK = 0;
@@ -22,42 +38,35 @@ export async function main(ns : NS) : Promise<void> {
     let THREADS = 0;
     let FLUFFY = 0;
     let hasFormulas = ns.fileExists("Formulas.exe", 'home');
-    let PSERV_ONLY = false;
+    let PSERV_ONLY = config.PSERV_ONLY
     let batchcount = 0;
     let batch_failed = false;
-    let batchtime = 55; //ms   delay between parts of the current batch
-    let batchcountTresh = 25
-    let sleeptime = 10000
 
-    const flags = ns.flags([
-        ['tresh', 500],
-        ['server', false],
-        ['hacknet', false]
-    ]);
-
-    flags.server = !flags.server;
     ns.disableLog('ALL');
     ns.clearLog();
     ns.tail();
-    ns.print(`\ntresh:   ${flags.tresh}\nserver:  ${flags.server}\nhacknet: ${flags.hacknet}\n`);
+    ns.print(`\ntresh:   ${config.tresh}\nserver:  ${config.server}\nhacknet: ${config.hacknet}\n`);
     await startup(ns);
     await ns.sleep(5000);
     while (true) {
+
+        config = await parseConfig()
+
         await ns.sleep(0);
 
 
-        if (batchcount >= batchcountTresh) {
+        if (batchcount >= config.batchcountTresh) {
             batchcount = 0;
             hasFormulas = ns.fileExists("Formulas.exe", 'home');
-            ns.print('\nINFO: sleeping for ' + (sleeptime / 1000) + 's\n');
-            await ns.sleep(sleeptime);
+            ns.print('\nINFO: sleeping for ' + (config.sleeptime / 1000) + 's\n');
+            await ns.sleep(config.sleeptime);
         }
 
 
         let pserv_threads = 0;
         for (let i = 0; i < ns.getPurchasedServers().length && !PSERV_ONLY; i++) {
             pserv_threads += Math.floor((ns.getServerMaxRam(ns.getPurchasedServers()[i])) / SCRIPTS.CST);
-            if (pserv_threads >= flags.tresh) {
+            if (pserv_threads >= config.tresh) {
                 PSERV_ONLY = true;
             }
         }
@@ -67,10 +76,10 @@ export async function main(ns : NS) : Promise<void> {
             FLUFFY = 0;
         }
         await refresh(ns);
-        if (flags.server) {
+        if (config.server) {
             prnt_S = await Server(ns);
         }
-        if (flags.hacknet) {
+        if (config.hacknet) {
             prnt_H = Hacknet(ns);
         }
         let temp = CURRENT;
@@ -158,12 +167,12 @@ export async function main(ns : NS) : Promise<void> {
                 if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
             }
         }
-        await ns.sleep(batchtime); //catch-up time
+        await ns.sleep(config.batchtime); //catch-up time
         while (NEEDED_GRW > 0 && !batch_failed) {
             let n_grw = 0;
             const current_batch = [];
 
-            await ns.sleep(batchtime)
+            await ns.sleep(config.batchtime)
 
             CURRENT = CURRENT.sort(function (a, b) { return b.left - a.left; });
             for (let i = 0; NEEDED_GRW > 0 && !batch_failed; i++) {
@@ -182,7 +191,7 @@ export async function main(ns : NS) : Promise<void> {
                     break;
                 }
             }
-            await ns.sleep(batchtime);
+            await ns.sleep(config.batchtime);
             CURRENT = CURRENT.sort(function (a, b) { return a.left - b.left; });
             for (let i = 0; i < CURRENT.length && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
@@ -198,7 +207,7 @@ export async function main(ns : NS) : Promise<void> {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
                 }
             }
-            await ns.sleep(batchtime);
+            await ns.sleep(config.batchtime);
         }
         while (NEEDED_HCK > 0 && !batch_failed) {
             let n_hck = 0;
@@ -219,7 +228,7 @@ export async function main(ns : NS) : Promise<void> {
                     break;
                 }
             }
-            await ns.sleep(batchtime);
+            await ns.sleep(config.batchtime);
             for (let i = 0; i < CURRENT.length && !batch_failed; i++) {
                 if (CURRENT.length <= i) {
                     ns.tprint('ERROR: WKN ' + TARGET);
@@ -234,7 +243,7 @@ export async function main(ns : NS) : Promise<void> {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
                 }
             }
-            await ns.sleep(batchtime);
+            await ns.sleep(config.batchtime);
         }
 
         if (batch_failed || current_batch.includes(0) || temp_weakentime != ns.getWeakenTime(TARGET)) {
@@ -362,7 +371,7 @@ export async function main(ns : NS) : Promise<void> {
                 prnt = 'RESERVING:  ' + servers[0].name + '\n';
                 if (ns.getServerUsedRam(servers[0].name) == 0) {
                     ns.deleteServer(servers[0].name);
-                    await ns.sleep(batchtime);
+                    await ns.sleep(config.batchtime);
                     ns.purchaseServer(servers[0].name, maxram);
                     await ns.scp([SCRIPTS.GRW, SCRIPTS.HCK, SCRIPTS.WKN], 'home', servers[0].name);
                     prnt = 'UPGRADED:   ' + servers[0].name + '\n';
@@ -370,7 +379,7 @@ export async function main(ns : NS) : Promise<void> {
             }
             else {
                 ns.purchaseServer(servers[0].name, maxram);
-                await ns.sleep(batchtime);
+                await ns.sleep(config.batchtime);
                 await ns.scp([SCRIPTS.GRW, SCRIPTS.HCK, SCRIPTS.WKN], 'home', servers[0].name);
                 prnt = 'BOUGHT ' + servers[0].name + '\n';
                 await startup(ns);
@@ -447,5 +456,64 @@ export async function main(ns : NS) : Promise<void> {
         if (money >= 10 ** 6) { return ('$' + (money / 10 ** 6).toFixed(2) + 'm') }
         if (money >= 10 ** 3) { return ('$' + (money / 10 ** 3).toFixed(2) + 'k') }
         return ('$' + (money / 10 ** 0).toFixed(2) + ' ')
+    }
+
+    
+    async function parseConfig(): Promise < configValues >{
+
+        let filepath = '/config/batcher.config.txt'
+
+        if (!ns.fileExists(filepath)) {
+            
+            let standardconfigArray : string[] = [
+                '{\n',
+                '\n',
+                '//* Vital executables for the batcher to work                                                                                   */\n',
+                '\n',
+                '"HCK":"/programs/dependencies/1hack.js",        //* hack-file                                                                   */\n',
+                '"GRW":"/programs/dependencies/1grow.js",        //* grow-file                                                                   */\n',
+                '"WKN":"/programs/dependencies/1weaken.js",      //* weaken-file                                                                 */\n',
+                '\n',
+                '\n',
+                '\n',
+                '//* other scripts that should be run at startup                                                                                 */\n',
+                '\n',
+                '"StartOnce":["/programs/tools/watcher.js","/programs/tools/servinf.js","/programs/ContractSolver.js"],\n',
+                '\n',
+                '\n',
+                '\n',
+                '//* times and threshholds                                                                                                       */\n',
+                '\n',
+                '"batchtime":50,                                 //* delay between constituent parts of a batch                                  */\n',
+                '"batchcountTresh":25,                           //* number of batches between sleeping (to avoid batch fragmenting)             */\n',
+                '"sleeptime":10000,                              //* time to sleep for (to avoid batch fragmenting)                              */\n',
+                '"tresh":500,                                    //* threshhold of threads on player-servers before switch to only using those   */\n',
+                '\n',
+                '\n',
+                '\n',
+                '//* boolean settings                                                                                                            */\n',
+                '\n',
+                '"PSERV_ONLY":false,                             //* only use player-servers from the get-go?                                    */\n',
+                '"server":true,                                  //* upgrade/buy player-servers?                                                 */\n',
+                '"hacknet":false                                 //* upgrade/buy hacknet nodes?                                                  */\n',
+                '}\n',
+                '\n',
+                '\n',
+                '\n',
+                '\n',
+                '//* IF YOU WANT THE STANDARD CONFIG BACK, DELETE THIS FILE! IT WILL BE RE_CREATED AUTOMATICLY! */\n',
+                '\n',
+                '\n'
+            ];
+            
+            let standardconfig : string = ''
+            standardconfigArray.forEach(function (a) {standardconfig += a});
+            
+            await ns.write(filepath,standardconfig)
+            ns.tprint('ERROR: created missing config at:\n' + filepath + '\n\nadjust values if needed, then start this script again!')
+            ns.exit()
+        }
+        let raw = ns.read(filepath)
+        return JSON.parse(raw.replace(/( *\/\/\*.*\*\/)| *\n */gm,''))
     }
 }
