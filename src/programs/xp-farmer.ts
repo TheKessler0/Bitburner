@@ -6,28 +6,37 @@ export async function main(ns : NS) : Promise<void> {
 
     const script = '/programs/dependencies/1weaken.js'
     const target = 'joesguns'
-    const servers = ns.getPurchasedServers()
+    let servers = ns.getPurchasedServers()
 
-    for (let i = 0; i < servers.length; i++) {
-        ns.killall(servers[i])
-        await ns.scp(script,'home',servers[i])
+    for (let server of servers) {
+        ns.killall(server)
+        await ns.scp(script,'home',server)
     }
+
+    servers.push('home')
+
+    servers = servers.sort(function (a,b) {
+        if (a == 'home') return 1
+        const aN = parseInt(a.replace(/S0|S/gm,''),10)
+        const bN = parseInt(b.replace(/S0|S/gm,''),10)
+        return aN - bN
+    });
 
     ns.clearLog()
 
     while (true) {
         let prnt = ''
         let allThreads = 0
-        for (let i = 0; i < servers.length; i++) {
-            const threads = Math.floor((ns.getServerMaxRam(servers[i]) - ns.getServerUsedRam(servers[i])) / ns.getScriptRam(script))
+        for (let server of servers) {
+            const threads = Math.floor((ns.getServerMaxRam(server) - ns.getServerUsedRam(server)) / ns.getScriptRam(script))
             if (threads > 0) {
                 allThreads += threads   
-                ns.exec(script,servers[i],threads,target)
-                prnt += (`\n${servers[i]}: ${formatNumber(threads)} threads`)
+                ns.exec(script,server,threads,target)
+                prnt += (`\n${(server + ':').padEnd(5,' ')} ${formatNumber(threads)} threads`)
             }
         }
         if (allThreads > 0) {
-            prnt += `\nALL: ${formatNumber(allThreads)} threads`
+            prnt += `\nALL:  ${formatNumber(allThreads)} threads`
             ns.clearLog()
             ns.print(prnt)
         }
