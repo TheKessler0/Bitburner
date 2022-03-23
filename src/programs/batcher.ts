@@ -54,13 +54,13 @@ export async function main(ns : NS) : Promise<void> {
     while (true) {
 
         config = await parseConfig()
+        hasFormulas = ns.fileExists("Formulas.exe", 'home');
 
         await ns.sleep(0);
 
 
         if (batchcount >= config.batchcountTresh && config.sleeptime > 0) {
             batchcount = 0;
-            hasFormulas = ns.fileExists("Formulas.exe", 'home');
             ns.print('\nINFO: sleeping for ' + (config.sleeptime / 1000).toFixed(2) + 's\n');
             await ns.sleep(config.sleeptime);
         }
