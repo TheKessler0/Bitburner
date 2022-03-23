@@ -522,9 +522,17 @@ export async function main(ns : NS) : Promise<void> {
 
     async function testSaveFileIntegrity() : Promise<void> {
 
-        if (!ns.fileExists(config.HCK)) { await createHCK() }
-        if (!ns.fileExists(config.GRW)) { await createGRW() }
-        if (!ns.fileExists(config.WKN)) { await createWKN() }
+        let createdScripts = false
+
+        if (!ns.fileExists(config.HCK)) { await createHCK(); createdScripts = true }
+        if (!ns.fileExists(config.GRW)) { await createGRW(); createdScripts = true }
+        if (!ns.fileExists(config.WKN)) { await createWKN(); createdScripts = true }
+
+        if (createdScripts) {
+            ns.tprint('WARN: CHECK NEW FILES LOCATED AT:\n' + config.HCK + '\n' + config.GRW + '\n' + config.WKN + '\n ')
+            ns.exit()
+        }
+
         let test = true
 
         for (let i = 0; i < config.StartOnce.length && test; i++) {
