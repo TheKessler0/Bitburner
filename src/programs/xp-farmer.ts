@@ -32,15 +32,15 @@ export async function main(ns : NS) : Promise<void> {
             if (threads > 0) {
                 allThreads += threads   
                 ns.exec(script,server,threads,target)
-                prnt += (`\n${(server + ':').padEnd(5,' ')} ${formatNumber(threads)} threads`)
             }
+            prnt += (`\n${(server + ':').padEnd(5,' ')} ${formatNumber(threads)} threads`)
         }
         if (allThreads > 0) {
             prnt += `\nALL:  ${formatNumber(allThreads)} threads`
             ns.clearLog()
             ns.print(prnt)
         }
-        await ns.sleep(1000)
+        await ns.sleep(250)
     }
 
     function formatNumber (num : number): string {

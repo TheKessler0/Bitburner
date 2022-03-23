@@ -28,6 +28,9 @@ export async function main(ns : NS) : Promise<void> {
         WKN: config.WKN,
         CST: Math.max(ns.getScriptRam(config.HCK),ns.getScriptRam(config.GRW),ns.getScriptRam(config.WKN))
     };
+
+    await testSaveFileIntegrity()
+
     let TARGET = '';
     let NEEDED_HCK = 0;
     let NEEDED_GRW = 0;
@@ -516,4 +519,27 @@ export async function main(ns : NS) : Promise<void> {
         let raw = ns.read(filepath)
         return JSON.parse(raw.replace(/( *\/\/\*.*\*\/)| *\n */gm,''))
     }
+
+    async function testSaveFileIntegrity() : Promise<void> {
+
+        const t1 = ns.fileExists(config.HCK)
+        const t2 = ns.fileExists(config.GRW)
+        const t3 = ns.fileExists(config.WKN)
+        let t4 = true
+
+        for (let i = 0; i < config.StartOnce.length && t4; i++) {
+            t4 = ns.fileExists(config.StartOnce[i])
+        }
+
+        if (t1 && t2 && t3 && t4) {
+            return
+        }
+        else {
+            ns.tprint('ERROR: PLEASE CHECK YOUR CONFIG FILE')
+            ns.exit()
+            return
+        }
+
+    }
+
 }
