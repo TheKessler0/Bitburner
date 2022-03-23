@@ -209,7 +209,7 @@ function processHelperSchedulerV3(p, hostId, type) {
     return new Process(type, p.pid, hostId, p.threads, p.args[0], { sid: +p.args[2], delay: +p.args[1] });
 }
 function processHelperCat(p, hostId, type) {
-    if (p.args.length !== 3) {
+    if (p.args.length !== 4) {
         return unknownProcess(p, hostId);
     }
     return new Process(type, p.pid, hostId, p.threads, p.args[0], { sid: +p.args[1] });

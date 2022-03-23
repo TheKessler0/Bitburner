@@ -153,6 +153,7 @@ export async function main(ns : NS) : Promise<void> {
 
     async function batch(ns: NS): Promise<void> {
         const temp_weakentime = ns.getWeakenTime(TARGET);
+        const hacktime = ns.getHackTime(TARGET)
         let current_batch = [];
         batch_failed = false;
         CURRENT = CURRENT.sort(function (a, b) { return a.left - b.left; });
@@ -164,7 +165,7 @@ export async function main(ns : NS) : Promise<void> {
             const minimum = Math.min(CURRENT[i].left, NEEDED_WKN_SEC);
             if (minimum > 0) {
                 if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'WKN_SEC0'));
+                current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, hacktime * 0.00, FLUFFY++, 'WKN_SEC0'));
                 NEEDED_WKN_SEC -= minimum;
                 CURRENT[i].left -= minimum;
                 if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
@@ -186,7 +187,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(CURRENT[i].left, NEEDED_GRW);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.GRW, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'GRW'));
+                    current_batch.push(ns.exec(SCRIPTS.GRW, CURRENT[i].name, minimum, TARGET, hacktime * 0.80, FLUFFY++, 'GRW'));
                     n_grw = Math.ceil(minimum / 12.50);
                     NEEDED_GRW -= minimum;
                     CURRENT[i].left -= minimum;
@@ -204,7 +205,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(n_grw, CURRENT[i].left);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'WKN_GRW'));
+                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, hacktime * 0.00, FLUFFY++, 'WKN_GRW'));
                     CURRENT[i].left -= minimum;
                     n_grw -= minimum;
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
@@ -223,7 +224,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(CURRENT[i].left, NEEDED_HCK);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.HCK, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'HCK'));
+                    current_batch.push(ns.exec(SCRIPTS.HCK, CURRENT[i].name, minimum, TARGET, hacktime * 3.00, FLUFFY++, 'HCK'));
                     n_hck = Math.ceil(minimum / 25.00);
                     NEEDED_HCK -= minimum;
                     CURRENT[i].left -= minimum;
@@ -240,7 +241,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(n_hck, CURRENT[i].left);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, FLUFFY++, 'WKN_HCK'));
+                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, hacktime * 0.00, FLUFFY++, 'WKN_HCK'));
                     CURRENT[i].left -= minimum;
                     n_hck -= minimum;
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
@@ -551,9 +552,8 @@ export async function main(ns : NS) : Promise<void> {
         async function createHCK () : Promise<void> {
             let raw = [
                 'export async function main(ns) {\n',
-                '    const target = ns.args[0];\n',
-                '    await ns.sleep(ns.getHackTime(target) * 3.0);\n',
-                '    await ns.hack(target);\n',
+                '    await ns.sleep(ns.args[1]);\n',
+                '    await ns.hack(ns.args[0]);\n',
                 '}'
             ];
             let compiled = ''
@@ -565,9 +565,8 @@ export async function main(ns : NS) : Promise<void> {
         async function createGRW () : Promise<void> {
             let raw = [
                 'export async function main(ns) {\n',
-                '    const target = ns.args[0];\n',
-                '    await ns.sleep(ns.getHackTime(target) * 0.8);\n',
-                '    await ns.grow(target);\n',
+                '    await ns.sleep(ns.args[1]);\n',
+                '    await ns.grow(ns.args[0]);\n',
                 '}'
             ];
             let compiled = ''
@@ -579,9 +578,8 @@ export async function main(ns : NS) : Promise<void> {
         async function createWKN () : Promise<void> {
             let raw = [
                 'export async function main(ns) {\n',
-                '    const target = ns.args[0];\n',
-                '    await ns.sleep(0);\n',
-                '    await ns.weaken(target)\n;',
+                '    await ns.sleep(ns.args[1]);\n',
+                '    await ns.weaken(ns.args[0])\n;',
                 '}'
             ];
             let compiled = ''
