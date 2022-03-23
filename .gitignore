@@ -4,3 +4,5 @@ src/lib/constants.ts
 package-lock.json
 # .vscode/
 .vscode/settings.json
+src/experimental/
+dist/experimental/
