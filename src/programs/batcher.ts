@@ -153,7 +153,7 @@ export async function main(ns : NS) : Promise<void> {
 
     async function batch(ns: NS): Promise<void> {
         const temp_weakentime = ns.getWeakenTime(TARGET);
-        const hacktime = ns.getHackTime(TARGET)
+        const hacktime = ns.getHackTime(TARGET);
         let current_batch = [];
         batch_failed = false;
         CURRENT = CURRENT.sort(function (a, b) { return a.left - b.left; });
@@ -165,7 +165,7 @@ export async function main(ns : NS) : Promise<void> {
             const minimum = Math.min(CURRENT[i].left, NEEDED_WKN_SEC);
             if (minimum > 0) {
                 if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, hacktime * 0.00, FLUFFY++, 'WKN_SEC0'));
+                current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, Math.floor(hacktime * 0.00), FLUFFY++, 'WKN_SEC0'));
                 NEEDED_WKN_SEC -= minimum;
                 CURRENT[i].left -= minimum;
                 if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
@@ -187,7 +187,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(CURRENT[i].left, NEEDED_GRW);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.GRW, CURRENT[i].name, minimum, TARGET, hacktime * 0.80, FLUFFY++, 'GRW'));
+                    current_batch.push(ns.exec(SCRIPTS.GRW, CURRENT[i].name, minimum, TARGET, Math.floor(hacktime * 0.80), FLUFFY++, 'GRW'));
                     n_grw = Math.ceil(minimum / 12.50);
                     NEEDED_GRW -= minimum;
                     CURRENT[i].left -= minimum;
@@ -205,7 +205,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(n_grw, CURRENT[i].left);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, hacktime * 0.00, FLUFFY++, 'WKN_GRW'));
+                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, Math.floor(hacktime * 0.00), FLUFFY++, 'WKN_GRW'));
                     CURRENT[i].left -= minimum;
                     n_grw -= minimum;
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
@@ -224,7 +224,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(CURRENT[i].left, NEEDED_HCK);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.HCK, CURRENT[i].name, minimum, TARGET, hacktime * 3.00, FLUFFY++, 'HCK'));
+                    current_batch.push(ns.exec(SCRIPTS.HCK, CURRENT[i].name, minimum, TARGET, Math.floor(hacktime * 3.00), FLUFFY++, 'HCK'));
                     n_hck = Math.ceil(minimum / 25.00);
                     NEEDED_HCK -= minimum;
                     CURRENT[i].left -= minimum;
@@ -241,7 +241,7 @@ export async function main(ns : NS) : Promise<void> {
                 const minimum = Math.min(n_hck, CURRENT[i].left);
                 if (minimum > 0) {
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
-                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, hacktime * 0.00, FLUFFY++, 'WKN_HCK'));
+                    current_batch.push(ns.exec(SCRIPTS.WKN, CURRENT[i].name, minimum, TARGET, Math.floor(hacktime * 0.00), FLUFFY++, 'WKN_HCK'));
                     CURRENT[i].left -= minimum;
                     n_hck -= minimum;
                     if (temp_weakentime != ns.getWeakenTime(TARGET)) { batch_failed = true }
@@ -505,7 +505,7 @@ export async function main(ns : NS) : Promise<void> {
                 '\n',
                 '\n',
                 '\n',
-                '//* IF YOU WANT THE STANDARD CONFIG BACK, DELETE THIS FILE! IT WILL BE RE_CREATED AUTOMATICLY! */\n',
+                '//* IF YOU WANT THE STANDARD CONFIG BACK, DELETE THIS FILE! IT WILL BE RE-CREATED AUTOMATICLY! */\n',
                 '\n',
                 '\n'
             ];
@@ -515,9 +515,10 @@ export async function main(ns : NS) : Promise<void> {
             
             await ns.write(filepath,standardconfig)
             ns.tprint('ERROR: created missing config at:\n' + filepath + '\n\nadjust values if needed, then start this script again!')
+
         }
         let raw = ns.read(filepath)
-        return JSON.parse(raw.replace(/( *\/\/\*.*\*\/)| *\n */gm,''))
+        return JSON.parse(raw.replace(/( *\/\/\*.*?\*\/)| *\n */gm,''))
     }
 
     async function testSaveFileIntegrity() : Promise<void> {
