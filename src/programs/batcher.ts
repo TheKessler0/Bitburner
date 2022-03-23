@@ -515,7 +515,6 @@ export async function main(ns : NS) : Promise<void> {
             
             await ns.write(filepath,standardconfig)
             ns.tprint('ERROR: created missing config at:\n' + filepath + '\n\nadjust values if needed, then start this script again!')
-            ns.exit()
         }
         let raw = ns.read(filepath)
         return JSON.parse(raw.replace(/( *\/\/\*.*\*\/)| *\n */gm,''))
@@ -530,8 +529,7 @@ export async function main(ns : NS) : Promise<void> {
         if (!ns.fileExists(config.WKN)) { await createWKN(); createdScripts = true }
 
         if (createdScripts) {
-            ns.tprint('WARN: CHECK NEW FILES LOCATED AT:\n' + config.HCK + '\n' + config.GRW + '\n' + config.WKN + '\n ')
-            ns.exit()
+            ns.tprint('WARN: CHECK NEW FILES\n')
         }
 
         let test = true
