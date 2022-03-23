@@ -522,22 +522,64 @@ export async function main(ns : NS) : Promise<void> {
 
     async function testSaveFileIntegrity() : Promise<void> {
 
-        const t1 = ns.fileExists(config.HCK)
-        const t2 = ns.fileExists(config.GRW)
-        const t3 = ns.fileExists(config.WKN)
-        let t4 = true
+        if (!ns.fileExists(config.HCK)) { await createHCK() }
+        if (!ns.fileExists(config.GRW)) { await createGRW() }
+        if (!ns.fileExists(config.WKN)) { await createWKN() }
+        let test = true
 
-        for (let i = 0; i < config.StartOnce.length && t4; i++) {
-            t4 = ns.fileExists(config.StartOnce[i])
+        for (let i = 0; i < config.StartOnce.length && test; i++) {
+            test = ns.fileExists(config.StartOnce[i])
         }
 
-        if (t1 && t2 && t3 && t4) {
+        if (test) {
             return
         }
         else {
-            ns.tprint('ERROR: PLEASE CHECK YOUR CONFIG FILE')
+            ns.tprint('ERROR: PLEASE CHECK YOUR CONFIG FILE\nERROR IN "StartOnce" Array')
             ns.exit()
             return
+        }
+
+        async function createHCK () : Promise<void> {
+            let raw = [
+                'export async function main(ns) {\n',
+                '    const target = ns.args[0];\n',
+                '    await ns.sleep(ns.getHackTime(target) * 3.0);\n',
+                '    await ns.hack(target);\n',
+                '}'
+            ];
+            let compiled = ''
+            raw.forEach( function (a) {compiled += a})
+            await ns.write(config.HCK,compiled,'w')
+            ns.tprint('INFO: created ' + config.HCK)
+        }
+
+        async function createGRW () : Promise<void> {
+            let raw = [
+                'export async function main(ns) {\n',
+                '    const target = ns.args[0];\n',
+                '    await ns.sleep(ns.getHackTime(target) * 0.8);\n',
+                '    await ns.grow(target);\n',
+                '}'
+            ];
+            let compiled = ''
+            raw.forEach( function (a) {compiled += a})
+            await ns.write(config.GRW,compiled,'w')
+            ns.tprint('INFO: created ' + config.GRW)
+        }
+
+        async function createWKN () : Promise<void> {
+            let raw = [
+                'export async function main(ns) {\n',
+                '    const target = ns.args[0];\n',
+                '    await ns.sleep(0);\n',
+                '    await ns.weaken(target)\n;',
+                '}'
+            ];
+            let compiled = ''
+            raw.forEach( function (a) {compiled += a})
+            await ns.write(config.WKN,compiled,'w')
+            ns.tprint('INFO: created ' + config.WKN)
         }
 
     }
