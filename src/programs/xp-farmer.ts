@@ -5,6 +5,8 @@ export async function main(ns : NS) : Promise<void> {
     ns.disableLog('ALL')
 
     const script = '/programs/dependencies/1weaken.js'
+    if (!ns.fileExists(script)) await createWKN();
+
     const target = 'joesguns'
     let servers = ns.getPurchasedServers()
 
@@ -31,7 +33,7 @@ export async function main(ns : NS) : Promise<void> {
             const threads = Math.floor((ns.getServerMaxRam(server) - ns.getServerUsedRam(server)) / ns.getScriptRam(script))
             if (threads > 0) {
                 allThreads += threads   
-                ns.exec(script,server,threads,target)
+                ns.exec(script,server,threads,target,0)
             }
             prnt += (`\n${(server + ':').padEnd(5,' ')} ${formatNumber(threads)} threads`)
         }
@@ -41,6 +43,19 @@ export async function main(ns : NS) : Promise<void> {
             ns.print(prnt)
         }
         await ns.sleep(250)
+    }
+
+    async function createWKN () : Promise<void> {
+      let raw = [
+          'export async function main(ns) {\n',
+          '    await ns.sleep(ns.args[1]);\n',
+          '    await ns.weaken(ns.args[0])\n;',
+          '}'
+      ];
+      let compiled = ''
+      raw.forEach( function (a) {compiled += a})
+      await ns.write(config.WKN,compiled,'w')
+      ns.tprint('INFO: created ' + config.WKN)
     }
 
     function formatNumber (num : number): string {
