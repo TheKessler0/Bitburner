@@ -46,16 +46,16 @@ export async function main(ns : NS) : Promise<void> {
     }
 
     async function createWKN () : Promise<void> {
-      let raw = [
-          'export async function main(ns) {\n',
-          '    await ns.sleep(ns.args[1]);\n',
-          '    await ns.weaken(ns.args[0])\n;',
-          '}'
-      ];
-      let compiled = ''
-      raw.forEach( function (a) {compiled += a})
-      await ns.write(config.WKN,compiled,'w')
-      ns.tprint('INFO: created ' + config.WKN)
+        let raw = [
+            'export async function main(ns) {\n',
+            '    await ns.sleep(ns.args[1]);\n',
+            '    await ns.weaken(ns.args[0])\n;',
+            '}'
+        ];
+        let compiled = ''
+        raw.forEach( function (a) {compiled += a})
+        await ns.write(script,compiled,'w')
+        ns.tprint('INFO: created ' + script)
     }
 
     function formatNumber (num : number): string {

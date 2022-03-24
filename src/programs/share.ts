@@ -5,6 +5,8 @@ export async function main(ns : NS) : Promise<void> {
     ns.disableLog('ALL')
 
     const script = '/programs/dependencies/1share.js'
+    if (!ns.fileExists(script)) await createSHR();
+
     let servers = ns.getPurchasedServers()
 
     for (let server of servers) {
@@ -40,6 +42,18 @@ export async function main(ns : NS) : Promise<void> {
             ns.print(prnt)
         }
         await ns.sleep(250)
+    }
+
+    async function createSHR () : Promise<void> {
+        let raw = [
+            'export async function main(ns) {\n',
+            '    await ns.share()\n;',
+            '}'
+        ];
+        let compiled = ''
+        raw.forEach( function (a) {compiled += a})
+        await ns.write(script,compiled,'w')
+        ns.tprint('INFO: created ' + script)
     }
 
     function formatNumber (num : number): string {
