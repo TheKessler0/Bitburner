@@ -525,7 +525,7 @@ export async function main(ns) {
         async function createHCK() {
             let raw = [
                 'export async function main(ns) {\n',
-                '    await ns.sleep(Math.floor(ns.args[1]));\n',
+                '    await ns.sleep(ns.args[1]);\n',
                 '    await ns.hack(ns.args[0]);\n',
                 '}'
             ];
@@ -537,7 +537,7 @@ export async function main(ns) {
         async function createGRW() {
             let raw = [
                 'export async function main(ns) {\n',
-                '    await ns.sleep(Math.floor(ns.args[1]));\n',
+                '    await ns.sleep(ns.args[1]);\n',
                 '    await ns.grow(ns.args[0]);\n',
                 '}'
             ];
@@ -549,7 +549,7 @@ export async function main(ns) {
         async function createWKN() {
             let raw = [
                 'export async function main(ns) {\n',
-                '    await ns.sleep(Math.floor(ns.args[1]));\n',
+                '    await ns.sleep(ns.args[1]);\n',
                 '    await ns.weaken(ns.args[0])\n;',
                 '}'
             ];
