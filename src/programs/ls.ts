@@ -10,5 +10,5 @@ export async function main(ns : NS) : Promise<void> {
     }
 
     
-
+    let temp = ns.hacknet.getNodeStats(0)
 }

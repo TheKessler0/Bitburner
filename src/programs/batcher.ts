@@ -258,7 +258,7 @@ export async function main(ns : NS) : Promise<void> {
                     ns.print('\nERROR: "ns.kill()" failed\n');
                 }
             }
-            await ns.sleep(Math.min(10000,Math.ceil(ns.getWeakenTime(TARGET) / 2)))
+            await ns.sleep(Math.min(10000,Math.ceil(ns.getWeakenTime(TARGET))))
         }
     }
     async function startup(ns: NS): Promise<void> {
